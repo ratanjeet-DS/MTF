@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zerodha MTF Institutional Research & Analytics Hub</title>
+    <title>Zerodha MTF Analytics Hub</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js CDN -->
@@ -25,8 +25,8 @@
             }
         }
         .tab-btn.active {
-            border-bottom-color: #2563eb;
-            color: #2563eb;
+            border-bottom-color: #ea580c;
+            color: #ea580c;
             font-weight: 600;
         }
         /* Custom scrollbars for data tables */
@@ -35,58 +35,62 @@
             width: 6px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-            background-color: #cbd5e1;
+            background-color: #fdba74;
             border-radius: 4px;
         }
     </style>
 </head>
-<!-- Chosen Palette: Slate Warm Harmony (Slate background, Deep Indigo header/accents, Emerald positive highlights, Amber/Rose risk alerts) -->
+<!-- Chosen Palette: Light Orange Harmony (Soft warm peach/cream background, Warm Dark Stone header, Vibrant Orange primary accents, Coral & Warm Amber alerts, Emerald gains) -->
 <!-- Application Structure Plan:
-     1. Navigation Bar & Header: Quick links to key modules (Overview, Scrip & Leverage Finder, Cost & Decay Calculator, RMS & Risk Simulator, Ledger & FIFO Operations, Regulatory Policy).
+     1. Navigation Bar & Header: Quick links to key modules (Overview, Scrip & Leverage Finder, Cost & Decay Calculator, RMS & Risk Simulator, Dual Ledger & Contract Note Reconciliation, MEESHO Case Study, Regulatory Policy).
      2. Intro Context Paragraphs for every section detailing report insights and practical application.
-     3. Section 1: Executive Overview & Capital Exposure Controls (Key metrics, exposure caps, core leverage mechanism).
+     3. Section 1: Executive Overview & Capital Exposure Controls (Key metrics, exposure caps, core leverage mechanism, and explicit RMS limit enhancement protocol via rms@zerodha.com).
      4. Section 2: Scrip Category & Leverage Matrix (Interactive search & filter table for 1,500+ Group 1 stocks with VaR/ELM calculations).
      5. Section 3: Cost of Carry & Holding Decay Simulator (Dynamic trade calculator with Chart.js visualization comparing holding period decay and Zerodha vs Percentage Broker cost models).
-     6. Section 4: RMS Risk Engine & Liquidation Simulator (Interactive 80% loss hard stop calculator, daily timeline, and priority cascade).
-     7. Section 5: Dual-Ledger Architecture & FIFO Friction (Visual step-by-step workflow of EQ vs MTF ledgers and FIFO liquidation risks).
-     8. Section 6: Regulatory Matrix & SEBI September 2024 Reforms (Clause 4.3.3.5 cash collateral maintenance rules, eligibility criteria).
+     6. Section 4: RMS Risk Engine & Liquidation Simulator (Interactive 80% loss hard stop calculator, daily timeline, priority cascade, and RMS request guidelines).
+     7. Section 5: Dual-Ledger Architecture & Contract Note Reconciliation (Interactive SBIN Contract Note vs Normal Ledger vs MTF Ledger Reconciliation Engine + Step-by-step math proof).
+     8. Section 6: MEESHO Case Study & Settlement Reconciliation (Real-world mathematical proof of 25,000 MTF shares sold, showing how initial margin blocked is returned via Net Settlement).
+     9. Section 7: Regulatory Matrix & SEBI September 2024 Reforms (Clause 4.3.3.5 cash collateral maintenance rules, eligibility criteria).
 -->
 <!-- Visualization & Content Choices:
-     1. Scrip Leverage Explorer -> Goal: Organize/Compare -> Interactive Filter Table + Canvas Bar Chart -> Justification: Allows users to quickly compare F&O vs Non-F&O margins.
+     1. Scrip Leverage Explorer -> Goal: Organize/Compare -> Interactive Filter Table + Canvas Bar Chart -> Justification: Allows users to quickly compare F&O vs Non-F&O margins using warm orange color accents.
      2. Holding Duration Decay -> Goal: Change over time -> Interactive Chart.js Line/Bar Chart + Real-time Return Calculator -> Justification: Demonstrates 14.6% p.a. drag across 7 to 365 days on committed capital.
      3. Broker Model Comparison -> Goal: Compare -> Chart.js Grouped Bar Chart -> Justification: Proves Zerodha's flat ₹20 brokerage superiority for large trades despite higher interest.
      4. RMS Hard Stop Simulator -> Goal: Risk Assessment -> Interactive Input + Visual Meter -> Justification: Shows precise stock price decline required to trigger automated 80% loss liquidation.
-     5. Dual Ledger & FIFO -> Goal: Process Flow -> Styled HTML/CSS Stepper -> Justification: Highlights operational traps without using SVG/Mermaid.
+     5. Contract Note vs Ledger Reconciler (SBIN Case Study) -> Goal: Reconciliation & Education -> Interactive Calculator + Dual-Ledger Bridge Table + Chart.js Breakdown -> Justification: Explains why the main equity ledger shows ₹35.98 (charges) while the MTF ledger reflects the gross ₹10,100 obligation, proving that Contract Note Total = MTF Ledger Gross + Normal Ledger Settlement.
+     6. MEESHO Case Study Breakdown -> Goal: Mathematical Proof / Education -> Interactive Calculation Step-by-Step + Component Stacked Chart + Sample Ledger Table -> Justification: Clearly proves that Initial Margin is implicitly released inside T+1 Net Settlement rather than as a standalone credit line item.
 -->
 <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
-<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+<body class="bg-orange-50/30 text-stone-800 font-sans antialiased min-h-screen flex flex-col">
 
     <!-- Top Navigation Header -->
-    <header class="bg-slate-900 text-white sticky top-0 z-50 shadow-md">
+    <header class="bg-stone-900 text-white sticky top-0 z-50 shadow-md border-b border-orange-500/20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <div class="flex items-center space-x-3">
                     <span class="text-2xl">📊</span>
                     <div>
-                        <h1 class="font-bold text-lg leading-tight">Zerodha MTF Research Hub</h1>
-                        <p class="text-xs text-slate-400">Institutional Governance, Mechanics & Risk Architecture</p>
+                        <h1 class="font-bold text-lg leading-tight text-white">Zerodha MTF Research Hub</h1>
+                        <p class="text-xs text-orange-200/80">Governance, Mechanics & Accounting Analytics</p>
                     </div>
                 </div>
-                <div class="hidden md:flex space-x-1 text-sm font-medium">
-                    <button onclick="switchTab('overview')" id="nav-overview" class="px-3 py-2 rounded-md text-slate-300 hover:text-white hover:bg-slate-800 transition">Overview</button>
-                    <button onclick="switchTab('scrips')" id="nav-scrips" class="px-3 py-2 rounded-md text-slate-300 hover:text-white hover:bg-slate-800 transition">Leverage Finder</button>
-                    <button onclick="switchTab('calculator')" id="nav-calculator" class="px-3 py-2 rounded-md text-slate-300 hover:text-white hover:bg-slate-800 transition">Cost & Decay Simulator</button>
-                    <button onclick="switchTab('risk')" id="nav-risk" class="px-3 py-2 rounded-md text-slate-300 hover:text-white hover:bg-slate-800 transition">RMS & Liquidation</button>
-                    <button onclick="switchTab('operations')" id="nav-operations" class="px-3 py-2 rounded-md text-slate-300 hover:text-white hover:bg-slate-800 transition">Ledger & FIFO</button>
-                    <button onclick="switchTab('regulatory')" id="nav-regulatory" class="px-3 py-2 rounded-md text-slate-300 hover:text-white hover:bg-slate-800 transition">SEBI Rules</button>
+                <div class="hidden lg:flex space-x-1 text-xs font-medium">
+                    <button onclick="switchTab('overview')" id="nav-overview" class="px-2.5 py-2 rounded-md text-stone-300 hover:text-white hover:bg-stone-800 transition">Overview</button>
+                    <button onclick="switchTab('scrips')" id="nav-scrips" class="px-2.5 py-2 rounded-md text-stone-300 hover:text-white hover:bg-stone-800 transition">Leverage Finder</button>
+                    <button onclick="switchTab('calculator')" id="nav-calculator" class="px-2.5 py-2 rounded-md text-stone-300 hover:text-white hover:bg-stone-800 transition">Cost & Decay</button>
+                    <button onclick="switchTab('risk')" id="nav-risk" class="px-2.5 py-2 rounded-md text-stone-300 hover:text-white hover:bg-stone-800 transition">RMS & Risk</button>
+                    <button onclick="switchTab('operations')" id="nav-operations" class="px-2.5 py-2 rounded-md bg-orange-600 text-white font-bold transition hover:bg-orange-500">Contract Note & Ledgers</button>
+                    <button onclick="switchTab('meesho')" id="nav-meesho" class="px-2.5 py-2 rounded-md text-stone-300 hover:text-white hover:bg-stone-800 transition">MEESHO Case Study</button>
+                    <button onclick="switchTab('regulatory')" id="nav-regulatory" class="px-2.5 py-2 rounded-md text-stone-300 hover:text-white hover:bg-stone-800 transition">SEBI Rules</button>
                 </div>
-                <div class="md:hidden">
-                    <select id="mobile-nav" onchange="switchTab(this.value)" class="bg-slate-800 text-white text-xs rounded p-2 border border-slate-700">
+                <div class="lg:hidden">
+                    <select id="mobile-nav" onchange="switchTab(this.value)" class="bg-stone-800 text-orange-100 text-xs rounded p-2 border border-stone-700">
                         <option value="overview">Executive Overview</option>
                         <option value="scrips">Leverage Finder</option>
                         <option value="calculator">Cost & Decay Simulator</option>
                         <option value="risk">RMS & Liquidation</option>
-                        <option value="operations">Ledger & FIFO</option>
+                        <option value="operations">Contract Note & Dual Ledger Reconciliation</option>
+                        <option value="meesho">MEESHO Reconciliation Case Study</option>
                         <option value="regulatory">SEBI Regulations</option>
                     </select>
                 </div>
@@ -99,70 +103,70 @@
 
         <!-- ================= SECTION 1: OVERVIEW ================= -->
         <section id="sec-overview" class="tab-content space-y-6">
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                <div class="border-b border-slate-200 pb-4 mb-4">
-                    <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-orange-100">
+                <div class="border-b border-stone-200 pb-4 mb-4">
+                    <h2 class="text-2xl font-bold text-stone-900 flex items-center gap-2">
                         <span>🏛️</span> Institutional Overview: Zerodha Margin Trading Facility (MTF)
                     </h2>
-                    <p class="mt-2 text-sm text-slate-600 leading-relaxed">
+                    <p class="mt-2 text-sm text-stone-600 leading-relaxed">
                         This analytical hub translates the complex institutional mechanics of Zerodha's Margin Trading Facility (MTF). MTF is a SEBI-regulated leverage mechanism allowing market participants to finance up to 5× leverage on over 1,500 Group 1 equity securities. While enhancing purchasing power, it introduces strict daily carrying costs (14.60% p.a.), automated Risk Management System (RMS) liquidations, depository pledge protocols, and dual-ledger accounting friction.
                     </p>
                 </div>
 
                 <!-- Metric Cards -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
-                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Daily Carrying Rate</p>
-                        <p class="text-2xl font-extrabold text-blue-600 mt-1">0.04% <span class="text-xs font-normal text-slate-500">/ day</span></p>
-                        <p class="text-xs text-slate-600 mt-1">₹40 per day per ₹1,00,000 funded (14.60% p.a. simple interest)</p>
+                    <div class="bg-orange-50/50 p-4 rounded-lg border border-orange-100">
+                        <p class="text-xs font-semibold text-stone-500 uppercase tracking-wider">Daily Carrying Rate</p>
+                        <p class="text-2xl font-extrabold text-orange-600 mt-1">0.04% <span class="text-xs font-normal text-stone-500">/ day</span></p>
+                        <p class="text-xs text-stone-600 mt-1">₹40 per day per ₹1,00,000 funded (14.60% p.a. simple interest)</p>
                     </div>
-                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
-                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Eligible Securities</p>
-                        <p class="text-2xl font-extrabold text-slate-900 mt-1">1,500+ <span class="text-xs font-normal text-slate-500">Scrips</span></p>
-                        <p class="text-xs text-slate-600 mt-1">Strictly SEBI Group 1 equities (Traded ≥80% days, Impact Cost ≤1%)</p>
+                    <div class="bg-orange-50/50 p-4 rounded-lg border border-orange-100">
+                        <p class="text-xs font-semibold text-stone-500 uppercase tracking-wider">Eligible Securities</p>
+                        <p class="text-2xl font-extrabold text-stone-900 mt-1">1,500+ <span class="text-xs font-normal text-stone-500">Scrips</span></p>
+                        <p class="text-xs text-stone-600 mt-1">Strictly SEBI Group 1 equities (Traded ≥80% days, Impact Cost ≤1%)</p>
                     </div>
-                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
-                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Max Account Funding</p>
+                    <div class="bg-orange-50/50 p-4 rounded-lg border border-orange-100">
+                        <p class="text-xs font-semibold text-stone-500 uppercase tracking-wider">Max Account Funding</p>
                         <p class="text-2xl font-extrabold text-emerald-600 mt-1">₹50 Crore</p>
-                        <p class="text-xs text-slate-600 mt-1">Standard platform limit (Single scrip: ₹12Cr Nifty500 / ₹7Cr Non-Nifty)</p>
+                        <p class="text-xs text-stone-600 mt-1">Standard platform limit (Single scrip: ₹12Cr Nifty500 / ₹7Cr Non-Nifty)</p>
                     </div>
-                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
-                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">RMS Hard Liquidation</p>
+                    <div class="bg-orange-50/50 p-4 rounded-lg border border-orange-100">
+                        <p class="text-xs font-semibold text-stone-500 uppercase tracking-wider">RMS Hard Liquidation</p>
                         <p class="text-2xl font-extrabold text-rose-600 mt-1">80% Loss</p>
-                        <p class="text-xs text-slate-600 mt-1">Automated square-off when loss hits 80% of broker funded capital</p>
+                        <p class="text-xs text-stone-600 mt-1">Automated square-off when loss hits 80% of broker funded capital</p>
                     </div>
                 </div>
             </div>
 
             <!-- Capital Exposure Limits Table -->
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                <h3 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-orange-100">
+                <h3 class="text-lg font-bold text-stone-900 mb-2 flex items-center gap-2">
                     <span>🛡️</span> Capital Exposure Concentration Caps
                 </h3>
-                <p class="text-xs text-slate-600 mb-4">
+                <p class="text-xs text-stone-600 mb-4">
                     To prevent single-client default risk and preserve systemic stability, Zerodha enforces hard credit limits across account holdings.
                 </p>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm text-slate-700">
-                        <thead class="bg-slate-100 text-slate-900 uppercase text-xs">
+                <div class="overflow-x-auto mb-4">
+                    <table class="w-full text-left text-sm text-stone-700">
+                        <thead class="bg-orange-100/60 text-stone-900 uppercase text-xs">
                             <tr>
                                 <th class="p-3 rounded-l">Exposure Limit Parameter</th>
                                 <th class="p-3">Capital Cap Value</th>
                                 <th class="p-3 rounded-r">Regulatory & Strategic Rationale</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-100">
-                            <tr class="hover:bg-slate-50">
+                        <tbody class="divide-y divide-orange-100">
+                            <tr class="hover:bg-orange-50/40">
                                 <td class="p-3 font-semibold">Overall Account Funding Ceiling</td>
-                                <td class="p-3 text-blue-600 font-bold">₹50,00,00,000 (₹50 Cr)</td>
-                                <td class="p-3 text-xs">Standard platform ceiling; larger commitments require individual credit underwriting.</td>
+                                <td class="p-3 text-orange-600 font-bold">₹50,00,00,000 (₹50 Cr)</td>
+                                <td class="p-3 text-xs">Standard platform ceiling per account across all active MTF positions.</td>
                             </tr>
-                            <tr class="hover:bg-slate-50">
+                            <tr class="hover:bg-orange-50/40">
                                 <td class="p-3 font-semibold">Nifty 500 Single-Scrip Limit</td>
                                 <td class="p-3 text-emerald-600 font-bold">₹12,00,00,000 (₹12 Cr)</td>
                                 <td class="p-3 text-xs">Maximum allowed loan commitment per stock for liquid Nifty 500 constituents.</td>
                             </tr>
-                            <tr class="hover:bg-slate-50">
+                            <tr class="hover:bg-orange-50/40">
                                 <td class="p-3 font-semibold">Non-Nifty 500 Single-Scrip Limit</td>
                                 <td class="p-3 text-amber-600 font-bold">₹7,00,00,000 (₹7 Cr)</td>
                                 <td class="p-3 text-xs">Conservative ceiling applied to mid-cap and small-cap Group 1 stocks to mitigate illiquidity risk.</td>
@@ -170,49 +174,60 @@
                         </tbody>
                     </table>
                 </div>
+
+                <!-- RMS Limit Increase Protocol Callout -->
+                <div class="p-4 bg-orange-50 border border-orange-200 rounded-lg flex items-start gap-3">
+                    <span class="text-xl">📩</span>
+                    <div class="text-xs text-orange-950">
+                        <p class="font-bold text-sm text-orange-950 mb-1">Requesting an Increase in MTF Account / Scrip Exposure Limit</p>
+                        <p class="leading-relaxed text-stone-700">
+                            If a client requires a higher MTF funding ceiling beyond the standard ₹50 Crore total account limit or wishes to increase single-scrip exposure limits (beyond ₹12 Cr for Nifty 500 / ₹7 Cr for Non-Nifty 500 stocks), they can request an enhancement by <strong>sending an email directly to the RMS (Risk Management System) team at <a href="mailto:rms@zerodha.com" class="underline font-bold text-orange-700 hover:text-orange-900">rms@zerodha.com</a></strong> or raising a ticket with the RMS desk. The RMS team conducts individual credit underwriting, risk evaluation, and account collateral verification before granting custom exposure approvals.
+                        </p>
+                    </div>
+                </div>
             </div>
         </section>
 
         <!-- ================= SECTION 2: LEVERAGE FINDER ================= -->
         <section id="sec-scrips" class="tab-content hidden space-y-6">
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                <div class="border-b border-slate-200 pb-4 mb-4">
-                    <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-orange-100">
+                <div class="border-b border-stone-200 pb-4 mb-4">
+                    <h2 class="text-2xl font-bold text-stone-900 flex items-center gap-2">
                         <span>🔍</span> Scrip Eligibility & Margin Formula Matrix
                     </h2>
-                    <p class="mt-2 text-sm text-slate-600 leading-relaxed">
+                    <p class="mt-2 text-sm text-stone-600 leading-relaxed">
                         Margin requirements are not arbitrary; they are strictly determined by exchange statistical risk parameters ($\text{VaR}$ and $\text{ELM}$). For F&O segment stocks, the required initial margin is $\text{VaR} + 3\times\text{ELM}$. For Non-F&O stocks, it is $\text{VaR} + 5\times\text{ELM}$. Effective purchasing power leverage is $L = 1 / \text{Margin Requirement}$.
                     </p>
                 </div>
 
                 <!-- Formulas Display -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                    <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg text-xs">
-                        <p class="font-bold text-blue-900 text-sm mb-1">F&O Segment Securities Formula</p>
-                        <p class="font-mono text-blue-800 bg-white p-2 rounded border border-blue-200">Margin (%) = VaR + (3 × ELM)</p>
-                        <p class="mt-2 text-slate-600">Higher liquidity and derivative availability lower the extreme loss multiplier to 3×.</p>
+                    <div class="p-4 bg-orange-50/70 border border-orange-200 rounded-lg text-xs">
+                        <p class="font-bold text-orange-950 text-sm mb-1">F&O Segment Securities Formula</p>
+                        <p class="font-mono text-orange-800 bg-white p-2 rounded border border-orange-200">Margin (%) = VaR + (3 × ELM)</p>
+                        <p class="mt-2 text-stone-600">Higher liquidity and derivative availability lower the extreme loss multiplier to 3×.</p>
                     </div>
                     <div class="p-4 bg-amber-50 border border-amber-200 rounded-lg text-xs">
-                        <p class="font-bold text-amber-900 text-sm mb-1">Non-F&O Segment Securities Formula</p>
+                        <p class="font-bold text-amber-950 text-sm mb-1">Non-F&O Segment Securities Formula</p>
                         <p class="font-mono text-amber-800 bg-white p-2 rounded border border-amber-200">Margin (%) = VaR + (5 × ELM)</p>
-                        <p class="mt-2 text-slate-600">Cash-only securities carry elevated tail risk, requiring a 5× ELM buffer.</p>
+                        <p class="mt-2 text-stone-600">Cash-only securities carry elevated tail risk, requiring a 5× ELM buffer.</p>
                     </div>
                 </div>
 
                 <!-- Search and Filter Controls -->
                 <div class="flex flex-col sm:flex-row gap-3 mb-4 justify-between items-center">
-                    <input type="text" id="scrip-search" oninput="filterScrips()" placeholder="Search Scrip Name or ISIN (e.g. RELIANCE, HDFCBANK)..." class="w-full sm:w-80 px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <input type="text" id="scrip-search" oninput="filterScrips()" placeholder="Search Scrip Name or ISIN (e.g. RELIANCE, SBIN, HDFCBANK)..." class="w-full sm:w-80 px-3 py-2 text-sm border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
                     <div class="flex gap-2 w-full sm:w-auto">
-                        <button onclick="setScripFilter('ALL')" id="filter-ALL" class="scrip-filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg bg-blue-600 text-white">All Scrips</button>
-                        <button onclick="setScripFilter('FO')" id="filter-FO" class="scrip-filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-200 text-slate-700">F&O Segment</button>
-                        <button onclick="setScripFilter('NONFO')" id="filter-NONFO" class="scrip-filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-200 text-slate-700">Non-F&O Segment</button>
+                        <button onclick="setScripFilter('ALL')" id="filter-ALL" class="scrip-filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg bg-orange-600 text-white">All Scrips</button>
+                        <button onclick="setScripFilter('FO')" id="filter-FO" class="scrip-filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg bg-stone-200 text-stone-700">F&O Segment</button>
+                        <button onclick="setScripFilter('NONFO')" id="filter-NONFO" class="scrip-filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg bg-stone-200 text-stone-700">Non-F&O Segment</button>
                     </div>
                 </div>
 
                 <!-- Table -->
                 <div class="overflow-x-auto custom-scrollbar">
-                    <table class="w-full text-left text-sm text-slate-700">
-                        <thead class="bg-slate-100 text-slate-900 uppercase text-xs">
+                    <table class="w-full text-left text-sm text-stone-700">
+                        <thead class="bg-orange-100/60 text-stone-900 uppercase text-xs">
                             <tr>
                                 <th class="p-3">Scrip Symbol</th>
                                 <th class="p-3">ISIN Code</th>
@@ -221,7 +236,7 @@
                                 <th class="p-3 text-right">Max Purchasing Power</th>
                             </tr>
                         </thead>
-                        <tbody id="scrip-table-body" class="divide-y divide-slate-100 font-mono text-xs">
+                        <tbody id="scrip-table-body" class="divide-y divide-orange-100 font-mono text-xs">
                             <!-- Populated dynamically by JS -->
                         </tbody>
                     </table>
@@ -229,11 +244,11 @@
             </div>
 
             <!-- Chart Comparison of Sample Scrips -->
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                <h3 class="text-base font-bold text-slate-900 mb-2">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-orange-100">
+                <h3 class="text-base font-bold text-stone-900 mb-2">
                     Comparative Purchasing Leverage Across Representative Scrips
                 </h3>
-                <p class="text-xs text-slate-600 mb-4">
+                <p class="text-xs text-stone-600 mb-4">
                     Comparison of minimum cash margin commitment required versus effective leverage multiple generated.
                 </p>
                 <div class="chart-container">
@@ -244,47 +259,47 @@
 
         <!-- ================= SECTION 3: CALCULATOR & DECAY ================= -->
         <section id="sec-calculator" class="tab-content hidden space-y-6">
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                <div class="border-b border-slate-200 pb-4 mb-4">
-                    <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-orange-100">
+                <div class="border-b border-stone-200 pb-4 mb-4">
+                    <h2 class="text-2xl font-bold text-stone-900 flex items-center gap-2">
                         <span>🧮</span> Interactive MTF Cost & Holding Period Decay Simulator
                     </h2>
-                    <p class="mt-2 text-sm text-slate-600 leading-relaxed">
+                    <p class="mt-2 text-sm text-stone-600 leading-relaxed">
                         Holding leveraged positions introduces continuous interest friction. At 0.04% daily simple interest (14.60% p.a.), carrying costs accumulate over calendar days (including weekends and market holidays). Use this simulator to model net realized returns and identify the exact breakeven hurdle rate across holding periods.
                     </p>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     <!-- Controls Column -->
-                    <div class="lg:col-span-5 bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4">
-                        <h3 class="font-bold text-slate-900 text-sm border-b pb-2">Trade Inputs</h3>
+                    <div class="lg:col-span-5 bg-orange-50/40 p-5 rounded-xl border border-orange-100 space-y-4">
+                        <h3 class="font-bold text-stone-900 text-sm border-b border-orange-200 pb-2">Trade Inputs</h3>
                         
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Total Position Value (₹)</label>
-                            <input type="number" id="calc-value" value="100000" step="10000" oninput="runCalculator()" class="w-full p-2 border border-slate-300 rounded text-sm font-mono focus:ring-2 focus:ring-blue-500">
+                            <label class="block text-xs font-semibold text-stone-700 mb-1">Total Position Value (₹)</label>
+                            <input type="number" id="calc-value" value="100000" step="10000" oninput="runCalculator()" class="w-full p-2 border border-stone-300 rounded text-sm font-mono focus:ring-2 focus:ring-orange-500">
                         </div>
 
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Committed Client Margin (%)</label>
-                            <input type="range" id="calc-margin" min="20" max="50" value="25" step="1" oninput="runCalculator()" class="w-full">
-                            <div class="flex justify-between text-xs text-slate-600 font-mono">
+                            <label class="block text-xs font-semibold text-stone-700 mb-1">Committed Client Margin (%)</label>
+                            <input type="range" id="calc-margin" min="20" max="50" value="25" step="1" oninput="runCalculator()" class="w-full accent-orange-600">
+                            <div class="flex justify-between text-xs text-stone-600 font-mono">
                                 <span>20% (5×)</span>
-                                <span id="calc-margin-val" class="font-bold text-blue-600">25% (4× Leverage)</span>
+                                <span id="calc-margin-val" class="font-bold text-orange-600">25% (4× Leverage)</span>
                                 <span>50% (2×)</span>
                             </div>
                         </div>
 
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Holding Duration (Calendar Days)</label>
-                            <input type="number" id="calc-days" value="30" min="1" max="365" oninput="runCalculator()" class="w-full p-2 border border-slate-300 rounded text-sm font-mono">
+                            <label class="block text-xs font-semibold text-stone-700 mb-1">Holding Duration (Calendar Days)</label>
+                            <input type="number" id="calc-days" value="30" min="1" max="365" oninput="runCalculator()" class="w-full p-2 border border-stone-300 rounded text-sm font-mono">
                         </div>
 
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Expected Asset Return / Capital Gain (%)</label>
-                            <input type="number" id="calc-gain" value="5.0" step="0.5" oninput="runCalculator()" class="w-full p-2 border border-slate-300 rounded text-sm font-mono">
+                            <label class="block text-xs font-semibold text-stone-700 mb-1">Expected Asset Return / Capital Gain (%)</label>
+                            <input type="number" id="calc-gain" value="5.0" step="0.5" oninput="runCalculator()" class="w-full p-2 border border-stone-300 rounded text-sm font-mono">
                         </div>
 
-                        <div class="pt-2 text-xs text-slate-500 space-y-1">
+                        <div class="pt-2 text-xs text-stone-500 space-y-1">
                             <p>• Interest: 0.04%/day on funded loan.</p>
                             <p>• Brokerage: Capped at ₹20 per trade entry/exit.</p>
                             <p>• Depository Pledge/Unpledge: ₹35.40 total per ISIN.</p>
@@ -295,41 +310,41 @@
                     <!-- Real-Time Results Column -->
                     <div class="lg:col-span-7 flex flex-col justify-between space-y-4">
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                            <div class="bg-blue-50 p-3 rounded-lg border border-blue-200">
-                                <p class="text-xs text-slate-500">Committed Margin</p>
-                                <p id="res-margin" class="text-lg font-bold text-blue-700">₹25,000</p>
-                            </div>
-                            <div class="bg-indigo-50 p-3 rounded-lg border border-indigo-200">
-                                <p class="text-xs text-slate-500">Zerodha MTF Loan</p>
-                                <p id="res-loan" class="text-lg font-bold text-indigo-700">₹75,000</p>
+                            <div class="bg-orange-50 p-3 rounded-lg border border-orange-200">
+                                <p class="text-xs text-stone-500">Committed Margin</p>
+                                <p id="res-margin" class="text-lg font-bold text-orange-700">₹25,000</p>
                             </div>
                             <div class="bg-amber-50 p-3 rounded-lg border border-amber-200">
-                                <p class="text-xs text-slate-500">Accrued Interest</p>
-                                <p id="res-interest" class="text-lg font-bold text-amber-700">₹900</p>
+                                <p class="text-xs text-stone-500">Zerodha MTF Loan</p>
+                                <p id="res-loan" class="text-lg font-bold text-amber-800">₹75,000</p>
                             </div>
-                            <div class="bg-slate-100 p-3 rounded-lg border border-slate-200">
-                                <p class="text-xs text-slate-500">Total Carrying Costs</p>
-                                <p id="res-costs" class="text-lg font-bold text-slate-800">₹1,211</p>
+                            <div class="bg-amber-100/50 p-3 rounded-lg border border-amber-200">
+                                <p class="text-xs text-stone-500">Accrued Interest</p>
+                                <p id="res-interest" class="text-lg font-bold text-amber-900">₹900</p>
+                            </div>
+                            <div class="bg-stone-100 p-3 rounded-lg border border-stone-200">
+                                <p class="text-xs text-stone-500">Total Carrying Costs</p>
+                                <p id="res-costs" class="text-lg font-bold text-stone-800">₹1,211</p>
                             </div>
                             <div class="bg-emerald-50 p-3 rounded-lg border border-emerald-200">
-                                <p class="text-xs text-slate-500">Net Realized Profit</p>
+                                <p class="text-xs text-stone-500">Net Realized Profit</p>
                                 <p id="res-profit" class="text-lg font-bold text-emerald-700">₹3,789</p>
                             </div>
                             <div class="bg-purple-50 p-3 rounded-lg border border-purple-200">
-                                <p class="text-xs text-slate-500">Return on Invested Capital</p>
+                                <p class="text-xs text-stone-500">Return on Invested Capital</p>
                                 <p id="res-roi" class="text-lg font-bold text-purple-700">+15.16%</p>
                             </div>
                         </div>
 
                         <!-- Breakeven Callout -->
-                        <div class="p-3 bg-slate-900 text-white rounded-lg flex justify-between items-center text-xs">
+                        <div class="p-3 bg-stone-900 text-white rounded-lg flex justify-between items-center text-xs">
                             <span>Target Asset Appreciation Required for Breakeven:</span>
-                            <span id="res-breakeven" class="font-mono font-bold text-yellow-400 text-sm">1.21%</span>
+                            <span id="res-breakeven" class="font-mono font-bold text-orange-400 text-sm">1.21%</span>
                         </div>
 
                         <!-- Decay Chart Container -->
-                        <div class="bg-white p-4 rounded-lg border border-slate-200">
-                            <p class="text-xs font-bold text-slate-700 mb-2">Holding Time Decay Impact (Assuming 5% Stock Gain at 4x Leverage)</p>
+                        <div class="bg-white p-4 rounded-lg border border-orange-100">
+                            <p class="text-xs font-bold text-stone-700 mb-2">Holding Time Decay Impact (Assuming 5% Stock Gain at 4x Leverage)</p>
                             <div class="chart-container">
                                 <canvas id="decayChart"></canvas>
                             </div>
@@ -339,11 +354,11 @@
             </div>
 
             <!-- Broker Model Cost Comparison -->
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                <h3 class="text-base font-bold text-slate-900 mb-2">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-orange-100">
+                <h3 class="text-base font-bold text-stone-900 mb-2">
                     Zerodha Flat-Brokerage Model vs Percentage Broker Model (e.g. 9.8% Interest + 0.1% Brokerage)
                 </h3>
-                <p class="text-xs text-slate-600 mb-4">
+                <p class="text-xs text-stone-600 mb-4">
                     Why Zerodha's flat ₹20 brokerage cap saves significant money on large swing trades despite a higher nominal interest rate (14.6% vs 9.8%).
                 </p>
                 <div class="chart-container">
@@ -354,14 +369,26 @@
 
         <!-- ================= SECTION 4: RMS & RISK ================= -->
         <section id="sec-risk" class="tab-content hidden space-y-6">
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                <div class="border-b border-slate-200 pb-4 mb-4">
-                    <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-orange-100">
+                <div class="border-b border-stone-200 pb-4 mb-4">
+                    <h2 class="text-2xl font-bold text-stone-900 flex items-center gap-2">
                         <span>⚡</span> Risk Management System (RMS) & Liquidation Protocols
                     </h2>
-                    <p class="mt-2 text-sm text-slate-600 leading-relaxed">
+                    <p class="mt-2 text-sm text-stone-600 leading-relaxed">
                         To protect the brokerage against counterparty default under Sections 176 and 177 of the Indian Contract Act (1872), Zerodha operates automated risk management systems. While SEBI allows a $T+5$ regulatory window for margin shortfalls, sharp intraday losses trigger strict, automated square-off thresholds without prior notice.
                     </p>
+                </div>
+
+                <!-- RMS Limit Enhancement Banner -->
+                <div class="mb-6 p-4 bg-orange-50 border border-orange-200 rounded-xl flex items-center justify-between">
+                    <div class="space-y-1">
+                        <p class="text-sm font-bold text-orange-950 flex items-center gap-1.5">
+                            <span>📧</span> Need a Higher MTF Limit or Scrip-Level Enhancement?
+                        </p>
+                        <p class="text-xs text-stone-700">
+                            Clients can request an increase in their MTF account leverage cap or single-scrip exposure limit by sending an email directly to the <strong>RMS team at <a href="mailto:rms@zerodha.com" class="underline font-bold text-orange-700">rms@zerodha.com</a></strong>. Requests are reviewed based on portfolio composition and risk profile.
+                        </p>
+                    </div>
                 </div>
 
                 <!-- 80% Hard Stop Calculator -->
@@ -369,108 +396,108 @@
                     <h3 class="text-rose-900 font-bold text-base mb-2 flex items-center gap-2">
                         <span>🚨</span> Interactive 80% Funded Capital Hard Stop Simulator
                     </h3>
-                    <p class="text-xs text-slate-700 mb-4">
+                    <p class="text-xs text-stone-700 mb-4">
                         Zerodha automatically liquidates an MTF position if unrealized losses hit <strong>80% of the capital funded by Zerodha</strong> for that specific scrip. Calculate the exact market drop percentage that causes an immediate forced liquidation:
                     </p>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Total Purchase Value (₹)</label>
-                            <input type="number" id="rms-trade-val" value="100000" step="10000" oninput="calcRMS()" class="w-full p-2 border border-slate-300 rounded text-sm font-mono">
+                            <label class="block text-xs font-semibold text-stone-700 mb-1">Total Purchase Value (₹)</label>
+                            <input type="number" id="rms-trade-val" value="100000" step="10000" oninput="calcRMS()" class="w-full p-2 border border-stone-300 rounded text-sm font-mono">
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Your Margin Contribution (₹)</label>
-                            <input type="number" id="rms-user-margin" value="25000" step="5000" oninput="calcRMS()" class="w-full p-2 border border-slate-300 rounded text-sm font-mono">
+                            <label class="block text-xs font-semibold text-stone-700 mb-1">Your Margin Contribution (₹)</label>
+                            <input type="number" id="rms-user-margin" value="25000" step="5000" oninput="calcRMS()" class="w-full p-2 border border-stone-300 rounded text-sm font-mono">
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Zerodha Loan Amount (₹)</label>
-                            <input type="number" id="rms-zerodha-loan" value="75000" readonly class="w-full p-2 border border-slate-200 bg-slate-100 rounded text-sm font-mono text-slate-600">
+                            <label class="block text-xs font-semibold text-stone-700 mb-1">Zerodha Loan Amount (₹)</label>
+                            <input type="number" id="rms-zerodha-loan" value="75000" readonly class="w-full p-2 border border-stone-200 bg-stone-100 rounded text-sm font-mono text-stone-600">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-white p-4 rounded-lg border border-rose-200">
                         <div>
-                            <p class="text-xs text-slate-500">80% Loss Trigger Value</p>
+                            <p class="text-xs text-stone-500">80% Loss Trigger Value</p>
                             <p id="rms-loss-trigger" class="text-lg font-bold text-rose-600">₹60,000 Loss</p>
                         </div>
                         <div>
-                            <p class="text-xs text-slate-500">Liquidation Position Value</p>
-                            <p id="rms-position-val" class="text-lg font-bold text-slate-800">₹40,000 Remaining</p>
+                            <p class="text-xs text-stone-500">Liquidation Position Value</p>
+                            <p id="rms-position-val" class="text-lg font-bold text-stone-800">₹40,000 Remaining</p>
                         </div>
                         <div>
-                            <p class="text-xs text-slate-500">Stock Decline Required</p>
+                            <p class="text-xs text-stone-500">Stock Decline Required</p>
                             <p id="rms-drop-pct" class="text-lg font-bold text-rose-700">-48.00% Stock Drop</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Daily Operational Timeline -->
-                <h3 class="text-base font-bold text-slate-900 mb-3">Daily RMS Operations Timetable</h3>
+                <h3 class="text-base font-bold text-stone-900 mb-3">Daily RMS Operations Timetable</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
-                    <div class="p-3 bg-slate-50 border-l-4 border-blue-500 rounded-r-lg">
-                        <p class="font-bold text-xs text-blue-900">08:00 AM</p>
-                        <p class="text-xs font-semibold text-slate-800 mt-0.5">Deficit Alert</p>
-                        <p class="text-xs text-slate-600 mt-1">Automated scanners dispatch SMS/email alerts notifying clients to deposit capital.</p>
+                    <div class="p-3 bg-orange-50/50 border-l-4 border-orange-500 rounded-r-lg">
+                        <p class="font-bold text-xs text-orange-900">08:00 AM</p>
+                        <p class="text-xs font-semibold text-stone-800 mt-0.5">Deficit Alert</p>
+                        <p class="text-xs text-stone-600 mt-1">Automated scanners dispatch SMS/email alerts notifying clients to deposit capital.</p>
                     </div>
-                    <div class="p-3 bg-slate-50 border-l-4 border-amber-500 rounded-r-lg">
+                    <div class="p-3 bg-orange-50/50 border-l-4 border-amber-500 rounded-r-lg">
                         <p class="font-bold text-xs text-amber-900">09:15 AM</p>
-                        <p class="text-xs font-semibold text-slate-800 mt-0.5">Market Opening</p>
-                        <p class="text-xs text-slate-600 mt-1">During extreme market volatility, RMS reserves authority to square off degraded accounts immediately.</p>
+                        <p class="text-xs font-semibold text-stone-800 mt-0.5">Market Opening</p>
+                        <p class="text-xs text-stone-600 mt-1">During extreme market volatility, RMS reserves authority to square off degraded accounts immediately.</p>
                     </div>
-                    <div class="p-3 bg-slate-50 border-l-4 border-rose-500 rounded-r-lg">
+                    <div class="p-3 bg-orange-50/50 border-l-4 border-rose-500 rounded-r-lg">
                         <p class="font-bold text-xs text-rose-900">11:00 AM</p>
-                        <p class="text-xs font-semibold text-slate-800 mt-0.5">Rectification Deadline</p>
-                        <p class="text-xs text-slate-600 mt-1">Standard cutoff for fund additions. Unrectified debits trigger forced market liquidation.</p>
+                        <p class="text-xs font-semibold text-stone-800 mt-0.5">Rectification Deadline</p>
+                        <p class="text-xs text-stone-600 mt-1">Standard cutoff for fund additions. Unrectified debits trigger forced market liquidation.</p>
                     </div>
-                    <div class="p-3 bg-slate-50 border-l-4 border-purple-500 rounded-r-lg">
+                    <div class="p-3 bg-orange-50/50 border-l-4 border-purple-500 rounded-r-lg">
                         <p class="font-bold text-xs text-purple-900">04:00 PM</p>
-                        <p class="text-xs font-semibold text-slate-800 mt-0.5">Group 1 Removal Cutoff</p>
-                        <p class="text-xs text-slate-600 mt-1">Positions in scrips disqualified from Group 1 status are forcibly converted or squared off.</p>
+                        <p class="text-xs font-semibold text-stone-800 mt-0.5">Group 1 Removal Cutoff</p>
+                        <p class="text-xs text-stone-600 mt-1">Positions in scrips disqualified from Group 1 status are forcibly converted or squared off.</p>
                     </div>
                 </div>
 
                 <!-- Hierarchical Priority Table -->
-                <h3 class="text-base font-bold text-slate-900 mb-2">RMS Hierarchical Liquidation Priority Sequence</h3>
-                <p class="text-xs text-slate-600 mb-3">
+                <h3 class="text-base font-bold text-stone-900 mb-2">RMS Hierarchical Liquidation Priority Sequence</h3>
+                <p class="text-xs text-stone-600 mb-3">
                     When an account enters a deficit across multiple assets, Zerodha liquidates holdings in a structured sequence to minimize exchange-level peak margin penalties:
                 </p>
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs text-slate-700">
-                        <thead class="bg-slate-100 uppercase text-slate-900">
+                    <table class="w-full text-left text-xs text-stone-700">
+                        <thead class="bg-orange-100/60 uppercase text-stone-900">
                             <tr>
                                 <th class="p-2.5">Priority Stage</th>
                                 <th class="p-2.5">Target Asset Class / Position</th>
                                 <th class="p-2.5">Risk Management Rationale</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-100 font-mono">
-                            <tr class="hover:bg-slate-50">
+                        <tbody class="divide-y divide-orange-100 font-mono">
+                            <tr class="hover:bg-orange-50/40">
                                 <td class="p-2.5 font-bold text-rose-600">Stage 1</td>
                                 <td class="p-2.5 font-semibold">Loss-Making F&O Positions</td>
                                 <td class="p-2.5 font-sans">Liquidated first to curtail exchange peak margin penalty escalations.</td>
                             </tr>
-                            <tr class="hover:bg-slate-50">
+                            <tr class="hover:bg-orange-50/40">
                                 <td class="p-2.5 font-bold text-amber-600">Stage 2</td>
                                 <td class="p-2.5 font-semibold">Futures & Short Option Legs</td>
                                 <td class="p-2.5 font-sans">Squared off next to eliminate heavy regulatory margin absorption.</td>
                             </tr>
-                            <tr class="hover:bg-slate-50">
-                                <td class="p-2.5 font-bold text-blue-600">Stage 3</td>
+                            <tr class="hover:bg-orange-50/40">
+                                <td class="p-2.5 font-bold text-orange-600">Stage 3</td>
                                 <td class="p-2.5 font-semibold">Open MTF Leveraged Holdings</td>
                                 <td class="p-2.5 font-sans">Liquidated in cash market to repay loan and clear outstanding ledger debit.</td>
                             </tr>
-                            <tr class="hover:bg-slate-50">
-                                <td class="p-2.5 font-bold text-indigo-600">Stage 4</td>
+                            <tr class="hover:bg-orange-50/40">
+                                <td class="p-2.5 font-bold text-purple-600">Stage 4</td>
                                 <td class="p-2.5 font-semibold">Long Options Contracts</td>
                                 <td class="p-2.5 font-sans">Closed later due to defined premium-capped downside risk.</td>
                             </tr>
-                            <tr class="hover:bg-slate-50">
-                                <td class="p-2.5 font-bold text-slate-600">Stage 5</td>
+                            <tr class="hover:bg-orange-50/40">
+                                <td class="p-2.5 font-bold text-stone-600">Stage 5</td>
                                 <td class="p-2.5 font-semibold">Pledged Cash-Equivalent Collateral</td>
                                 <td class="p-2.5 font-sans">Liquid ETFs (e.g. Liquidcase) invoked to settle remaining debit.</td>
                             </tr>
-                            <tr class="hover:bg-slate-50">
-                                <td class="p-2.5 font-bold text-slate-600">Stage 6</td>
+                            <tr class="hover:bg-orange-50/40">
+                                <td class="p-2.5 font-bold text-stone-600">Stage 6</td>
                                 <td class="p-2.5 font-semibold">Pledged Non-Cash Equity Shares</td>
                                 <td class="p-2.5 font-sans">Traditional equity demat collateral invoked and liquidated as final recovery.</td>
                             </tr>
@@ -480,63 +507,189 @@
             </div>
         </section>
 
-        <!-- ================= SECTION 5: OPERATIONS & DUAL LEDGER ================= -->
+        <!-- ================= SECTION 5: OPERATIONS, DUAL LEDGER & CONTRACT NOTE RECONCILIATION ================= -->
         <section id="sec-operations" class="tab-content hidden space-y-6">
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                <div class="border-b border-slate-200 pb-4 mb-4">
-                    <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
-                        <span>⚙️</span> Dual-Ledger Architecture, Hypothecation & FIFO Friction
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-orange-100">
+                <div class="border-b border-stone-200 pb-4 mb-4">
+                    <h2 class="text-2xl font-bold text-stone-900 flex items-center gap-2">
+                        <span>⚙️</span> Dual-Ledger Architecture & Contract Note Reconciliation Engine
                     </h2>
-                    <p class="mt-2 text-sm text-slate-600 leading-relaxed">
-                        To comply with SEBI reporting requirements, Zerodha separates client capital into two distinct ledgers. Understanding how funds flow between these accounts, how CDSL depository pledging operates via DDPI, and how Indian tax FIFO rules can inadvertently trap investors is essential.
+                    <p class="mt-2 text-sm text-stone-600 leading-relaxed">
+                        To comply with SEBI reporting mandates, Zerodha segregates client capital into two separate ledgers: the <strong>Normal Equity Ledger</strong> (which holds cash deposits, statutory charges, brokerage, and margin transfers) and the <strong>MTF Ledger</strong> (which tracks the gross stock loan obligations and MTM credits/debits). Investors often get confused why the Contract Note total payable doesn't directly match the Normal Equity Ledger. Below is the exact accounting bridge and interactive reconciliation logic.
                     </p>
                 </div>
 
-                <!-- Dual Ledger Breakdown -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <div class="p-5 bg-slate-50 rounded-xl border border-slate-200">
-                        <div class="flex items-center gap-2 mb-3">
-                            <span class="p-2 bg-blue-100 text-blue-800 rounded font-bold text-xs">EQ LEDGER</span>
-                            <h3 class="font-bold text-slate-900 text-sm">Equity (EQ) Trading Ledger</h3>
+                <!-- REAL-WORLD CASE STUDY: SBIN CONTRACT NOTE RECONCILIATION -->
+                <div class="bg-orange-50 border border-orange-200 p-5 rounded-xl mb-6">
+                    <div class="flex flex-wrap justify-between items-center gap-2 mb-3">
+                        <h3 class="text-orange-950 font-bold text-base flex items-center gap-2">
+                            <span>📝</span> Case Study: SBIN MTF Contract Note vs Dual-Ledger Reconciliation
+                        </h3>
+                        <span class="px-2.5 py-1 bg-orange-600 text-white font-mono text-xs font-bold rounded-md">Real Trade Example: 10 Qty SBIN @ ₹1010</span>
+                    </div>
+                    <p class="text-xs text-stone-700 leading-relaxed mb-4">
+                        Suppose you buy <strong>10 shares of State Bank of India (SBIN) at ₹1,010.00</strong> under MTF. Here is how the Contract Note breaks down into the two ledgers and why they sum up perfectly:
+                    </p>
+
+                    <!-- Interactive Contract Note Breakdown Calculator -->
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 bg-white p-4 rounded-xl border border-orange-200">
+                        <!-- Inputs -->
+                        <div class="lg:col-span-5 space-y-3 text-xs bg-orange-50/50 p-3 rounded-lg border border-orange-100">
+                            <p class="font-bold text-stone-900 text-sm border-b border-orange-200 pb-1">Trade Parameters</p>
+                            <div>
+                                <label class="block font-semibold text-stone-700 mb-0.5">Scrip Symbol</label>
+                                <input type="text" id="cn-scrip" value="SBIN" oninput="reconcileCN()" class="w-full p-1.5 border border-stone-300 rounded font-mono uppercase">
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block font-semibold text-stone-700 mb-0.5">Quantity</label>
+                                    <input type="number" id="cn-qty" value="10" oninput="reconcileCN()" class="w-full p-1.5 border border-stone-300 rounded font-mono">
+                                </div>
+                                <div>
+                                    <label class="block font-semibold text-stone-700 mb-0.5">Buy Price (₹)</label>
+                                    <input type="number" id="cn-price" value="1010" oninput="reconcileCN()" class="w-full p-1.5 border border-stone-300 rounded font-mono">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block font-semibold text-stone-700 mb-0.5">Brokerage/Share (₹)</label>
+                                    <input type="number" id="cn-brok" value="2.00" step="0.5" oninput="reconcileCN()" class="w-full p-1.5 border border-stone-300 rounded font-mono">
+                                </div>
+                                <div>
+                                    <label class="block font-semibold text-stone-700 mb-0.5">Exch Charges (₹)</label>
+                                    <input type="number" id="cn-exch" value="0.31" step="0.01" oninput="reconcileCN()" class="w-full p-1.5 border border-stone-300 rounded font-mono">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2 text-[11px]">
+                                <div>
+                                    <label class="block font-semibold text-stone-700">IGST (₹)</label>
+                                    <input type="number" id="cn-igst" value="3.66" step="0.01" oninput="reconcileCN()" class="w-full p-1 border border-stone-300 rounded font-mono">
+                                </div>
+                                <div>
+                                    <label class="block font-semibold text-stone-700">STT (₹)</label>
+                                    <input type="number" id="cn-stt" value="10.00" step="1" oninput="reconcileCN()" class="w-full p-1 border border-stone-300 rounded font-mono">
+                                </div>
+                                <div>
+                                    <label class="block font-semibold text-stone-700">Stamp (₹)</label>
+                                    <input type="number" id="cn-stamp" value="2.00" step="1" oninput="reconcileCN()" class="w-full p-1 border border-stone-300 rounded font-mono">
+                                </div>
+                            </div>
                         </div>
-                        <ul class="text-xs text-slate-600 space-y-2 list-disc list-inside">
+
+                        <!-- Contract Note Breakdown Display -->
+                        <div class="lg:col-span-7 space-y-3">
+                            <p class="font-bold text-stone-900 text-sm border-b border-stone-200 pb-1 flex justify-between">
+                                <span>Contract Note Summary Statement</span>
+                                <span class="text-orange-600 font-mono" id="cn-title-display">10 SBIN @ ₹1010</span>
+                            </p>
+                            <div class="overflow-x-auto text-xs font-mono">
+                                <table class="w-full border-collapse">
+                                    <tbody class="divide-y divide-stone-200">
+                                        <tr>
+                                            <td class="py-1 text-stone-600">Pay in / Pay out Obligation (Gross Trade Excl. Charges)</td>
+                                            <td class="py-1 text-right font-bold text-stone-900" id="disp-cn-gross">₹10,100.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-1 text-stone-600">Taxable Value of Supply (Brokerage)</td>
+                                            <td class="py-1 text-right text-stone-800" id="disp-cn-brok">₹20.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-1 text-stone-600">Exchange Transaction Charges + SEBI Fees</td>
+                                            <td class="py-1 text-right text-stone-800" id="disp-cn-exch">₹0.32</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-1 text-stone-600">IGST (@18% on Brokerage & Exchange Fees)</td>
+                                            <td class="py-1 text-right text-stone-800" id="disp-cn-igst">₹3.66</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-1 text-stone-600">Securities Transaction Tax (STT) + Stamp Duty</td>
+                                            <td class="py-1 text-right text-stone-800" id="disp-cn-stt">₹12.00</td>
+                                        </tr>
+                                        <tr class="bg-orange-100/70 font-bold text-stone-900">
+                                            <td class="py-1.5 px-1">Net Amount Payable by Client on Contract Note</td>
+                                            <td class="py-1.5 px-1 text-right text-orange-700 text-sm" id="disp-cn-total">₹10,135.98</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Visual Reconciliation Bridge Table -->
+                    <div class="mt-4 p-4 bg-white rounded-xl border border-orange-200">
+                        <h4 class="font-bold text-stone-900 text-sm mb-2 flex items-center gap-1.5">
+                            <span>🧩</span> Dual Ledger Accounting Bridge: Why Ledgers Match Contract Note
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-mono">
+                            <div class="p-3 bg-amber-50 border border-amber-200 rounded-lg space-y-1">
+                                <p class="font-sans font-bold text-amber-900 text-xs">1. MTF Ledger Entry</p>
+                                <p class="text-stone-600">Category: <span class="font-bold">MTF</span></p>
+                                <p class="text-amber-900 font-bold text-sm" id="bridge-mtf-val">Debit: ₹10,100.00</p>
+                                <p class="font-sans text-[11px] text-stone-500">Reflects Gross Obligation for MTF trade.</p>
+                            </div>
+
+                            <div class="p-3 bg-orange-50 border border-orange-200 rounded-lg space-y-1">
+                                <p class="font-sans font-bold text-orange-950 text-xs">2. Normal Equity Ledger Entry</p>
+                                <p class="text-stone-600">Category: <span class="font-bold">All Segments</span></p>
+                                <p class="text-orange-700 font-bold text-sm" id="bridge-norm-val">Debit: ₹35.98</p>
+                                <p class="font-sans text-[11px] text-stone-500">Reflects Net Equity Settlement (Brokerage + Levies).</p>
+                            </div>
+
+                            <div class="p-3 bg-stone-900 text-white rounded-lg space-y-1">
+                                <p class="font-sans font-bold text-orange-400 text-xs">3. Reconciliation Sum</p>
+                                <p class="text-stone-300">MTF Ledger + Normal Ledger</p>
+                                <p class="text-emerald-400 font-bold text-sm" id="bridge-sum-val">Sum = ₹10,135.98</p>
+                                <p class="font-sans text-[11px] text-stone-300">≡ Exact Match with Contract Note Total!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dual Ledger Breakdown Details -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="p-5 bg-orange-50/40 rounded-xl border border-orange-100">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="p-2 bg-orange-100 text-orange-800 rounded font-bold text-xs">EQ LEDGER</span>
+                            <h3 class="font-bold text-stone-900 text-sm">Equity (EQ) Trading Ledger ("All Segments")</h3>
+                        </div>
+                        <ul class="text-xs text-stone-600 space-y-2 list-disc list-inside">
                             <li>Records standard delivery (CNC) and intraday (MIS) trades.</li>
                             <li>Debits exchange fees, contract levies, statutory taxes, and daily interest.</li>
-                            <li>Absorbs daily Mark-to-Market (MTM) loss deductions.</li>
-                            <li>Debits CDSL depository pledge fees (₹17.70 per ISIN).</li>
+                            <li>Shows <strong>Net Equity Settlement</strong> (e.g. ₹35.98 for statutory charges).</li>
+                            <li>Debits <strong>Initial Margin charged for MTF</strong> (e.g. ₹2,302.80) & <strong>MTM obligation blocked</strong> (e.g. ₹95.00).</li>
                         </ul>
                     </div>
 
-                    <div class="p-5 bg-slate-50 rounded-xl border border-slate-200">
+                    <div class="p-5 bg-amber-50/40 rounded-xl border border-amber-100">
                         <div class="flex items-center gap-2 mb-3">
-                            <span class="p-2 bg-indigo-100 text-indigo-800 rounded font-bold text-xs">MTF LEDGER</span>
-                            <h3 class="font-bold text-slate-900 text-sm">MTF Loan Tracking Ledger</h3>
+                            <span class="p-2 bg-amber-100 text-amber-900 rounded font-bold text-xs">MTF LEDGER</span>
+                            <h3 class="font-bold text-stone-900 text-sm">MTF Loan Tracking Ledger ("Category: MTF")</h3>
                         </div>
-                        <ul class="text-xs text-slate-600 space-y-2 list-disc list-inside">
+                        <ul class="text-xs text-stone-600 space-y-2 list-disc list-inside">
                             <li>Serves strictly as a loan tracking account for margin funding.</li>
-                            <li>Debited with gross purchase value upon trade execution.</li>
-                            <li>Credited with initial margin transferred from EQ Ledger.</li>
-                            <li>Margin credit reversed back to EQ Ledger upon position liquidation.</li>
+                            <li>Debited with gross purchase value (e.g. <strong>Gross obligation: ₹10,100.00</strong>).</li>
+                            <li>Credited with initial margin received from EQ Ledger (e.g. ₹2,302.80 credit).</li>
+                            <li>Credited with MTM obligation received from EQ Ledger (e.g. ₹95.00 credit).</li>
                         </ul>
                     </div>
                 </div>
 
                 <!-- Depository Hypothecation Flow -->
-                <div class="bg-indigo-50 border border-indigo-200 p-5 rounded-xl mb-6">
-                    <h3 class="text-indigo-900 font-bold text-sm mb-2 flex items-center gap-2">
+                <div class="bg-orange-50 border border-orange-200 p-5 rounded-xl mb-6">
+                    <h3 class="text-orange-950 font-bold text-sm mb-2 flex items-center gap-2">
                         <span>🔒</span> Automated CDSL Depository Pledging Workflow
                     </h3>
-                    <p class="text-xs text-slate-700 leading-relaxed">
-                        Under SEBI rules, all funded shares must be formally pledged to <code class="bg-white px-1 py-0.5 rounded border border-indigo-200 font-mono text-indigo-800">Zerodha Broking Limited – Client securities Margin Funding Account</code>. With an active <strong>DDPI (Demat Debit and Pledge Instruction)</strong>, this hypothecation happens automatically in the back-office pipeline, avoiding manual CDSL OTP verification. Positions carry an <strong>"M"</strong> tag on Kite.
+                    <p class="text-xs text-stone-700 leading-relaxed">
+                        Under SEBI rules, all funded shares must be formally pledged to <code class="bg-white px-1 py-0.5 rounded border border-orange-200 font-mono text-orange-800">Zerodha Broking Limited – Client securities Margin Funding Account</code>. With an active <strong>DDPI (Demat Debit and Pledge Instruction)</strong>, this hypothecation happens automatically in the back-office pipeline, avoiding manual CDSL OTP verification. Positions carry an <strong>"M"</strong> tag on Kite.
                     </p>
                 </div>
 
                 <!-- FIFO Friction & Order Lock Warning -->
                 <div class="bg-amber-50 border border-amber-200 p-5 rounded-xl">
-                    <h3 class="text-amber-900 font-bold text-sm mb-2 flex items-center gap-2">
+                    <h3 class="text-amber-950 font-bold text-sm mb-2 flex items-center gap-2">
                         <span>⚠️</span> First-In, First-Out (FIFO) Tax Friction & Execution Locks
                     </h3>
-                    <div class="space-y-3 text-xs text-slate-700">
+                    <div class="space-y-3 text-xs text-stone-700">
                         <p>
                             <strong>1. The FIFO Trap:</strong> Indian tax regulations enforce First-In, First-Out (FIFO) share reconciliation. If you hold 100 shares in CNC delivery (bought earlier at ₹1,500) and buy 100 additional shares via MTF at ₹1,200, an exit order intended for MTF will involuntarily sell your older CNC delivery shares first! This realizes an unintended capital loss on CNC while leaving the MTF loan active and accruing daily interest.
                         </p>
@@ -548,28 +701,189 @@
             </div>
         </section>
 
-        <!-- ================= SECTION 6: REGULATORY ================= -->
+        <!-- ================= SECTION 6: MEESHO RECONCILIATION CASE STUDY ================= -->
+        <section id="sec-meesho" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-orange-100">
+                <div class="border-b border-stone-200 pb-4 mb-4">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <h2 class="text-2xl font-bold text-stone-900 flex items-center gap-2">
+                            <span>💡</span> MEESHO 25,000 Shares Settlement Reconciliation
+                        </h2>
+                        <span class="px-3 py-1 bg-emerald-100 text-emerald-800 font-bold text-xs rounded-full">REAL-WORLD RECONCILIATION CASE STUDY</span>
+                    </div>
+                    <p class="mt-2 text-sm text-stone-600 leading-relaxed">
+                        <strong>Client Contention:</strong> The client purchased 25,000 MTF shares of MEESHO across 3 tranches (26, 27, 28 Aug 2026) with <strong>₹17,51,136</strong> initial margin debited. Upon position liquidation on 02/09/2026, the client claimed that the initial margin was never refunded because no separate ledger line item titled <em>"Initial Margin Reversal"</em> or <em>"Margin Unblocked"</em> appeared on their equity statement.
+                    </p>
+                </div>
+
+                <!-- Mathematical Core Formula Card -->
+                <div class="p-5 bg-stone-900 text-white rounded-xl mb-6">
+                    <h3 class="text-sm font-bold text-orange-400 uppercase tracking-wider mb-2">Core Accounting Mathematical Identity</h3>
+                    <div class="font-mono text-xs sm:text-sm bg-stone-800 p-3 rounded-lg border border-stone-700 space-y-1">
+                        <p><span class="text-stone-400">Net Ledger Settlement Credit</span> = Gross Sale Value - Zerodha Funded Loan</p>
+                        <p><span class="text-stone-400">Where Zerodha Loan Amount</span> = Total Buy Value - Initial Margin Blocked</p>
+                        <p class="text-emerald-400 font-bold pt-1">∴ Net Ledger Settlement Credit = Initial Margin Blocked + Realized P&L (Gain/Loss)</p>
+                    </div>
+                    <p class="text-xs text-stone-300 mt-2">
+                        <strong>Conclusion:</strong> In Zerodha's dual-ledger system, initial margin is <strong>not</strong> credited as a separate standalone entry. It is embedded directly inside the <strong>Net Settlement Credit</strong> posted to the Equity Ledger on $T+1$ settlement day.
+                    </p>
+                </div>
+
+                <!-- Key Data Point Metrics -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-orange-50/50 p-4 rounded-lg border border-orange-100">
+                        <p class="text-xs font-semibold text-stone-500 uppercase">MTF Shares Sold</p>
+                        <p class="text-xl font-extrabold text-stone-900 mt-0.5">25,000 Shares</p>
+                        <p class="text-xs text-stone-500 mt-1">Avg Sell Price: ₹206.2738</p>
+                    </div>
+                    <div class="bg-orange-50/50 p-4 rounded-lg border border-orange-100">
+                        <p class="text-xs font-semibold text-stone-500 uppercase">Gross Sale Value (A)</p>
+                        <p class="text-xl font-extrabold text-orange-600 mt-0.5">₹51,56,845.00</p>
+                        <p class="text-xs text-stone-500 mt-1">25,000 × ₹206.2738</p>
+                    </div>
+                    <div class="bg-orange-50/50 p-4 rounded-lg border border-orange-100">
+                        <p class="text-xs font-semibold text-stone-500 uppercase">Initial Margin Blocked (C)</p>
+                        <p class="text-xl font-extrabold text-amber-700 mt-0.5">₹17,51,136.00</p>
+                        <p class="text-xs text-stone-500 mt-1">Sum of 3 Tranche Debits</p>
+                    </div>
+                    <div class="bg-orange-50/50 p-4 rounded-lg border border-orange-100">
+                        <p class="text-xs font-semibold text-stone-500 uppercase">Realized Trade Loss (D)</p>
+                        <p class="text-xl font-extrabold text-rose-600 mt-0.5">-₹28,034.56</p>
+                        <p class="text-xs text-stone-500 mt-1">Gross Sell Value minus Buy Value</p>
+                    </div>
+                </div>
+
+                <!-- Detailed Step-by-Step Mathematical Reconciliation -->
+                <div class="bg-orange-50/30 p-5 rounded-xl border border-orange-100 mb-6">
+                    <h3 class="text-base font-bold text-stone-900 mb-3 flex items-center gap-2">
+                        <span>🧾</span> Step-by-Step Ledger Isolation & Verification
+                    </h3>
+                    <p class="text-xs text-stone-600 mb-4">
+                        On 02/09/2026, the client executed both Non-MTF delivery (CNC) trades and the MEESHO MTF liquidation. To isolate the MTF portion:
+                    </p>
+
+                    <div class="space-y-3 font-mono text-xs">
+                        <div class="flex justify-between p-2.5 bg-white rounded border border-stone-200">
+                            <span>1. Total Contract Note Pay-in / Payout Obligation:</span>
+                            <span class="font-bold text-stone-900">₹1,19,12,101.70</span>
+                        </div>
+                        <div class="flex justify-between p-2.5 bg-white rounded border border-stone-200">
+                            <span>2. Less: MEESHO MTF Gross Sale Component (A):</span>
+                            <span class="font-bold text-orange-600">- ₹51,56,845.00</span>
+                        </div>
+                        <div class="flex justify-between p-2.5 bg-orange-50 rounded border border-orange-200 text-orange-950 font-bold">
+                            <span>3. Equals: Non-MTF (CNC) Delivery Obligation Portion:</span>
+                            <span>₹67,55,256.70</span>
+                        </div>
+                        <div class="flex justify-between p-2.5 bg-white rounded border border-stone-200">
+                            <span>4. Total Net Equity Ledger Settlement Posted on 03/09/2026 (T+1):</span>
+                            <span class="font-bold text-stone-900">₹84,78,358.14</span>
+                        </div>
+                        <div class="flex justify-between p-2.5 bg-emerald-50 rounded border border-emerald-200 text-emerald-900 font-bold text-sm">
+                            <span>5. Net MTF Settlement Credit Attributable (4 minus 3):</span>
+                            <span>₹17,23,101.44</span>
+                        </div>
+                    </div>
+
+                    <!-- Verification Box -->
+                    <div class="mt-4 p-4 bg-emerald-100 border border-emerald-300 rounded-lg text-emerald-950 text-xs">
+                        <p class="font-bold text-sm mb-1">Mathematical Verification Check:</p>
+                        <p class="font-mono">
+                            Expected Margin Release = Initial Margin Blocked - Realized Loss<br>
+                            Expected Margin Release = ₹17,51,136.00 - ₹28,034.56 = <strong>₹17,23,101.44</strong><br>
+                            <strong>₹17,23,101.44 ≡ ₹17,23,101.44 (EXACT MATHEMATICAL MATCH!)</strong>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Sample Ledger Representation Table -->
+                <h3 class="text-base font-bold text-stone-900 mb-2">Sample Equity Ledger Representation Layout</h3>
+                <p class="text-xs text-stone-600 mb-3">
+                    Illustrates how initial margin debits appear during purchase tranches and how the initial margin is implicitly returned inside the $T+1$ Net Settlement row upon liquidation:
+                </p>
+                <div class="overflow-x-auto custom-scrollbar mb-6">
+                    <table class="w-full text-left text-xs text-stone-700">
+                        <thead class="bg-stone-900 text-white uppercase font-sans">
+                            <tr>
+                                <th class="p-3">Settlement Date</th>
+                                <th class="p-3">Particulars / Transaction Description</th>
+                                <th class="p-3 text-right">Debit (₹)</th>
+                                <th class="p-3 text-right">Credit (₹)</th>
+                                <th class="p-3 text-right">Net Balance Impact</th>
+                                <th class="p-3">Explanatory Ledger Note</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-stone-200 font-mono">
+                            <tr class="hover:bg-orange-50/40">
+                                <td class="p-3 font-bold text-stone-900">26/08/2026</td>
+                                <td class="p-3">Initial Margin Blocked for MTF - MEESHO (Tranche 1)</td>
+                                <td class="p-3 text-right text-rose-600">₹6,00,000.00</td>
+                                <td class="p-3 text-right text-stone-400">-</td>
+                                <td class="p-3 text-right font-bold text-rose-600">-₹6,00,000.00</td>
+                                <td class="p-3 font-sans text-stone-500">Cash margin debited from EQ Ledger</td>
+                            </tr>
+                            <tr class="hover:bg-orange-50/40">
+                                <td class="p-3 font-bold text-stone-900">27/08/2026</td>
+                                <td class="p-3">Initial Margin Blocked for MTF - MEESHO (Tranche 2)</td>
+                                <td class="p-3 text-right text-rose-600">₹6,00,000.00</td>
+                                <td class="p-3 text-right text-stone-400">-</td>
+                                <td class="p-3 text-right font-bold text-rose-600">-₹6,00,000.00</td>
+                                <td class="p-3 font-sans text-stone-500">Cash margin debited from EQ Ledger</td>
+                            </tr>
+                            <tr class="hover:bg-orange-50/40">
+                                <td class="p-3 font-bold text-stone-900">28/08/2026</td>
+                                <td class="p-3">Initial Margin Blocked for MTF - MEESHO (Tranche 3)</td>
+                                <td class="p-3 text-right text-rose-600">₹5,51,136.00</td>
+                                <td class="p-3 text-right text-stone-400">-</td>
+                                <td class="p-3 text-right font-bold text-rose-600">-₹5,51,136.00</td>
+                                <td class="p-3 font-sans font-bold text-orange-700">Total Blocked = ₹17,51,136.00</td>
+                            </tr>
+                            <tr class="bg-emerald-50 hover:bg-emerald-100/80">
+                                <td class="p-3 font-bold text-emerald-950">03/09/2026 (T+1)</td>
+                                <td class="p-3 font-bold text-emerald-950">NSE Equity Net Settlement for 02/09/2026 (Includes MTF Liquidation & CNC Trades)</td>
+                                <td class="p-3 text-right text-stone-400">-</td>
+                                <td class="p-3 text-right font-bold text-emerald-700">₹84,78,358.14</td>
+                                <td class="p-3 text-right font-bold text-emerald-700">+₹84,78,358.14</td>
+                                <td class="p-3 font-sans text-xs text-emerald-900 font-medium">
+                                    <strong>Contains:</strong> Non-MTF trades (₹67,55,256.70) + Refunded Initial Margin (₹17,51,136.00) minus Realized Loss (₹28,034.56).
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Component Visual Stack Chart -->
+                <div class="bg-white p-5 rounded-xl border border-orange-100">
+                    <h3 class="text-sm font-bold text-stone-900 mb-2">Net Settlement Component Waterfall Breakdown</h3>
+                    <div class="chart-container">
+                        <canvas id="meeshoWaterfallChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 7: REGULATORY ================= -->
         <section id="sec-regulatory" class="tab-content hidden space-y-6">
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                <div class="border-b border-slate-200 pb-4 mb-4">
-                    <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-orange-100">
+                <div class="border-b border-stone-200 pb-4 mb-4">
+                    <h2 class="text-2xl font-bold text-stone-900 flex items-center gap-2">
                         <span>⚖️</span> SEBI Regulatory Framework & September 2024 Reform
                     </h2>
-                    <p class="mt-2 text-sm text-slate-600 leading-relaxed">
+                    <p class="mt-2 text-sm text-stone-600 leading-relaxed">
                         Margin trading operates under the SEBI Master Circular for Stock Exchanges and Clearing Corporations, ensuring systemic stability and protecting clearing institutions from broker-level defaults.
                     </p>
                 </div>
 
                 <!-- September 2024 Reform Box -->
-                <div class="bg-blue-50 border border-blue-200 p-5 rounded-xl mb-6">
-                    <span class="px-2 py-1 bg-blue-600 text-white font-bold text-xs rounded">SEBI CIRCULAR SEPT 2024</span>
-                    <h3 class="text-blue-900 font-bold text-base mt-2 mb-1">
+                <div class="bg-orange-50 border border-orange-200 p-5 rounded-xl mb-6">
+                    <span class="px-2 py-1 bg-orange-600 text-white font-bold text-xs rounded">SEBI CIRCULAR SEPT 2024</span>
+                    <h3 class="text-orange-950 font-bold text-base mt-2 mb-1">
                         Circular SEBI/HO/MRD/MRD-PoD-2/P/CIR/2024/118 (Clause 4.3.3.5)
                     </h3>
-                    <p class="text-xs text-slate-700 leading-relaxed mb-3">
+                    <p class="text-xs text-stone-700 leading-relaxed mb-3">
                         Issued in September 2024, this circular amended Para 4.3.3.1 of Chapter 1 of the Master Circular. Key provisions include:
                     </p>
-                    <ul class="text-xs text-slate-700 space-y-2 list-disc list-inside">
+                    <ul class="text-xs text-stone-700 space-y-2 list-disc list-inside">
                         <li><strong>Cash Collateral Maintenance:</strong> Funded Group 1 securities funded through cash collateral can now be considered toward the maintenance margin requirement.</li>
                         <li><strong>Standardized Margin Standard:</strong> Funded Group 1 stocks used as maintenance margin require $\text{VaR} + (5 \times \text{ELM})$, regardless of whether the stock is in the F&O segment.</li>
                         <li><strong>T+1 Upstream Reporting:</strong> Trading members must report daily MTF exposures to stock exchanges by 6:00 PM on $T+1$ day.</li>
@@ -577,11 +891,11 @@
                 </div>
 
                 <!-- Eligibility Matrix -->
-                <h3 class="text-base font-bold text-slate-900 mb-3">Client Account Eligibility Matrix</h3>
+                <h3 class="text-base font-bold text-stone-900 mb-3">Client Account Eligibility Matrix</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-lg">
                         <h4 class="font-bold text-emerald-900 text-xs mb-2">Eligible Account Categories</h4>
-                        <ul class="text-xs text-slate-700 space-y-1.5 list-disc list-inside">
+                        <ul class="text-xs text-stone-700 space-y-1.5 list-disc list-inside">
                             <li>Resident Individual Indian Citizens</li>
                             <li>Hindu Undivided Families (HUFs)</li>
                             <li>Corporate Trading Accounts</li>
@@ -590,7 +904,7 @@
                     </div>
                     <div class="p-4 bg-rose-50 border border-rose-200 rounded-lg">
                         <h4 class="font-bold text-rose-900 text-xs mb-2">Barred / Restricted Categories</h4>
-                        <ul class="text-xs text-slate-700 space-y-1.5 list-disc list-inside">
+                        <ul class="text-xs text-stone-700 space-y-1.5 list-disc list-inside">
                             <li>Non-Resident Indians (NRIs) - Barred by regulatory directive</li>
                             <li>Minor Accounts - Prohibited</li>
                             <li>Custodian-Settled Institutional Entities</li>
@@ -604,10 +918,9 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-slate-900 text-slate-400 text-xs py-6 border-t border-slate-800 mt-auto">
-        <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
-            <p>Zerodha Margin Trading Facility (MTF) Institutional Research & Interactive Analytics Hub</p>
-            <p class="text-slate-500">Based on official SEBI Master Circulars, SEBI/HO/MRD/MRD-PoD-2/P/CIR/2024/118, and Zerodha Broking Limited operational frameworks.</p>
+    <footer class="bg-stone-900 text-stone-400 text-xs py-4 border-t border-stone-800 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-stone-500">Analytics & Institutional Accounting Explorer</p>
         </div>
     </footer>
 
@@ -620,12 +933,12 @@
             if (target) target.classList.remove('hidden');
 
             document.querySelectorAll('header button').forEach(btn => {
-                btn.classList.remove('bg-slate-800', 'text-white');
-                btn.classList.add('text-slate-300');
+                btn.classList.remove('bg-stone-800', 'bg-orange-600', 'text-white');
+                btn.classList.add('text-stone-300');
             });
             const activeNav = document.getElementById('nav-' + tabId);
             if (activeNav) {
-                activeNav.classList.add('bg-slate-800', 'text-white');
+                activeNav.classList.add('bg-orange-600', 'text-white');
             }
             document.getElementById('mobile-nav').value = tabId;
 
@@ -635,13 +948,19 @@
                 if (decayChart) decayChart.update();
                 if (brokerCompareChart) brokerCompareChart.update();
             }
+            if (tabId === 'operations') {
+                reconcileCN();
+            }
+            if (tabId === 'meesho') {
+                initMeeshoChart();
+            }
         }
 
         // ================= SECTION 2: SCRIP DATA & LEVERAGE =================
         const scripData = [
+            { symbol: "SBIN", isin: "INE062A01020", category: "Large Cap / F&O", minMargin: 22.80, leverage: 4.39, group: "FO" },
             { symbol: "RELIANCE", isin: "INE002A01018", category: "Large Cap / F&O", minMargin: 22.60, leverage: 4.42, group: "FO" },
             { symbol: "HDFCBANK", isin: "INE040A01034", category: "Large Cap / F&O", minMargin: 22.60, leverage: 4.42, group: "FO" },
-            { symbol: "SBIN", isin: "INE062A01020", category: "Large Cap / F&O", minMargin: 22.80, leverage: 4.39, group: "FO" },
             { symbol: "BAJFINANCE", isin: "INE296A01032", category: "Financials / F&O", minMargin: 25.00, leverage: 4.00, group: "FO" },
             { symbol: "ACC", isin: "INE012A01025", category: "Materials / F&O", minMargin: 26.93, leverage: 3.71, group: "FO" },
             { symbol: "TRENT", isin: "INE849A01020", category: "Consumer / F&O", minMargin: 27.20, leverage: 3.68, group: "FO" },
@@ -666,12 +985,12 @@
 
             filtered.forEach(item => {
                 const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-50";
+                tr.className = "hover:bg-orange-50/40";
                 tr.innerHTML = `
-                    <td class="p-3 font-bold text-slate-900">${item.symbol}</td>
-                    <td class="p-3 text-slate-500">${item.isin}</td>
-                    <td class="p-3"><span class="px-2 py-0.5 text-xs rounded font-sans font-medium ${item.group==='FO'?'bg-blue-100 text-blue-800':'bg-amber-100 text-amber-800'}">${item.category}</span></td>
-                    <td class="p-3 text-right font-bold text-slate-800">${item.minMargin.toFixed(2)}%</td>
+                    <td class="p-3 font-bold text-stone-900">${item.symbol}</td>
+                    <td class="p-3 text-stone-500">${item.isin}</td>
+                    <td class="p-3"><span class="px-2 py-0.5 text-xs rounded font-sans font-medium ${item.group==='FO'?'bg-orange-100 text-orange-900':'bg-amber-100 text-amber-900'}">${item.category}</span></td>
+                    <td class="p-3 text-right font-bold text-stone-800">${item.minMargin.toFixed(2)}%</td>
                     <td class="p-3 text-right font-bold text-emerald-600">${item.leverage.toFixed(2)}×</td>
                 `;
                 tbody.appendChild(tr);
@@ -685,13 +1004,13 @@
         function setScripFilter(filter) {
             currentScripFilter = filter;
             document.querySelectorAll('.scrip-filter-btn').forEach(btn => {
-                btn.classList.remove('bg-blue-600', 'text-white');
-                btn.classList.add('bg-slate-200', 'text-slate-700');
+                btn.classList.remove('bg-orange-600', 'text-white');
+                btn.classList.add('bg-stone-200', 'text-stone-700');
             });
             const activeBtn = document.getElementById('filter-' + filter);
             if (activeBtn) {
-                activeBtn.classList.remove('bg-slate-200', 'text-slate-700');
-                activeBtn.classList.add('bg-blue-600', 'text-white');
+                activeBtn.classList.remove('bg-stone-200', 'text-stone-700');
+                activeBtn.classList.add('bg-orange-600', 'text-white');
             }
             renderScripTable();
         }
@@ -708,13 +1027,13 @@
                         {
                             label: 'Min Margin Required (%)',
                             data: scripData.map(s => s.minMargin),
-                            backgroundColor: 'rgba(239, 68, 68, 0.7)',
+                            backgroundColor: 'rgba(239, 68, 68, 0.75)',
                             yAxisID: 'y'
                         },
                         {
                             label: 'Purchasing Power Multiple (x)',
                             data: scripData.map(s => s.leverage),
-                            backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                            backgroundColor: 'rgba(234, 88, 12, 0.85)',
                             yAxisID: 'y1'
                         }
                     ]
@@ -808,8 +1127,8 @@
                         datasets: [{
                             label: 'Return on Margin (%)',
                             data: rois,
-                            borderColor: 'rgba(59, 130, 246, 1)',
-                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            borderColor: 'rgba(234, 88, 12, 1)',
+                            backgroundColor: 'rgba(234, 88, 12, 0.12)',
                             fill: true,
                             tension: 0.3,
                             pointRadius: 5
@@ -850,7 +1169,7 @@
                         datasets: [{
                             label: 'Total Direct Cost (Interest + Brokerage) (₹)',
                             data: [zerodhaTotal, pctTotal],
-                            backgroundColor: ['rgba(59, 130, 246, 0.8)', 'rgba(245, 158, 11, 0.8)']
+                            backgroundColor: ['rgba(234, 88, 12, 0.85)', 'rgba(245, 158, 11, 0.85)']
                         }]
                     },
                     options: {
@@ -886,12 +1205,77 @@
             document.getElementById('rms-drop-pct').innerText = `-${reqStockDropPct.toFixed(2)}% Stock Drop`;
         }
 
+        // ================= SECTION 5: CONTRACT NOTE RECONCILIATION =================
+        function reconcileCN() {
+            const scrip = document.getElementById('cn-scrip').value.toUpperCase() || "SBIN";
+            const qty = parseFloat(document.getElementById('cn-qty').value) || 10;
+            const price = parseFloat(document.getElementById('cn-price').value) || 1010;
+            const brokPerShare = parseFloat(document.getElementById('cn-brok').value) || 2.00;
+            const exch = parseFloat(document.getElementById('cn-exch').value) || 0.31;
+            const igst = parseFloat(document.getElementById('cn-igst').value) || 3.66;
+            const stt = parseFloat(document.getElementById('cn-stt').value) || 10.00;
+            const stamp = parseFloat(document.getElementById('cn-stamp').value) || 2.00;
+
+            const grossTradeVal = qty * price;
+            const totalBrok = qty * brokPerShare;
+            const totalCharges = totalBrok + exch + igst + stt + stamp;
+            const netPayableCN = grossTradeVal + totalCharges;
+
+            document.getElementById('cn-title-display').innerText = `${qty} ${scrip} @ ₹${price.toFixed(2)}`;
+            document.getElementById('disp-cn-gross').innerText = `₹${grossTradeVal.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+            document.getElementById('disp-cn-brok').innerText = `₹${totalBrok.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+            document.getElementById('disp-cn-exch').innerText = `₹${exch.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+            document.getElementById('disp-cn-igst').innerText = `₹${igst.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+            document.getElementById('disp-cn-stt').innerText = `₹${(stt + stamp).toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+            document.getElementById('disp-cn-total').innerText = `₹${netPayableCN.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+
+            document.getElementById('bridge-mtf-val').innerText = `Debit: ₹${grossTradeVal.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+            document.getElementById('bridge-norm-val').innerText = `Debit: ₹${totalCharges.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+            document.getElementById('bridge-sum-val').innerText = `Sum = ₹${netPayableCN.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+        }
+
+        // ================= SECTION 6: MEESHO WATERFALL CHART =================
+        let meeshoWaterfallChart;
+        function initMeeshoChart() {
+            if (meeshoWaterfallChart) return;
+            const ctx = document.getElementById('meeshoWaterfallChart').getContext('2d');
+            meeshoWaterfallChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Non-MTF Trades (CNC)', 'MEESHO Initial Margin Released', 'Trade Realized Loss', 'Net Equity Ledger Credit'],
+                    datasets: [{
+                        label: 'Ledger Component Value (₹)',
+                        data: [6755256.70, 1751136.00, -28034.56, 8478358.14],
+                        backgroundColor: [
+                            'rgba(234, 88, 12, 0.8)',
+                            'rgba(16, 185, 129, 0.8)',
+                            'rgba(239, 68, 68, 0.8)',
+                            'rgba(245, 158, 11, 0.9)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            title: { display: true, text: 'Amount in INR (₹)' }
+                        }
+                    }
+                }
+            });
+        }
+
         // Initialization
         window.addEventListener('DOMContentLoaded', () => {
             renderScripTable();
             initScripChart();
             runCalculator();
             calcRMS();
+            reconcileCN();
         });
     </script>
 </body>

@@ -71,7 +71,6 @@
                     <span class="text-2xl">📊</span>
                     <div>
                         <h1 class="font-bold text-lg leading-tight text-white">Zerodha MTF Research Hub</h1>
-                        <p class="text-xs text-orange-200/80">Governance, Mechanics & Accounting Analytics</p>
                     </div>
                 </div>
                 <div class="hidden lg:flex space-x-1 text-xs font-medium">
@@ -80,7 +79,7 @@
                     <button onclick="switchTab('calculator')" id="nav-calculator" class="px-2.5 py-2 rounded-md text-stone-300 hover:text-white hover:bg-stone-800 transition">Cost & Decay</button>
                     <button onclick="switchTab('risk')" id="nav-risk" class="px-2.5 py-2 rounded-md text-stone-300 hover:text-white hover:bg-stone-800 transition">RMS & Risk</button>
                     <button onclick="switchTab('operations')" id="nav-operations" class="px-2.5 py-2 rounded-md bg-orange-600 text-white font-bold transition hover:bg-orange-500">Contract Note & Ledgers</button>
-                    <button onclick="switchTab('meesho')" id="nav-meesho" class="px-2.5 py-2 rounded-md text-stone-300 hover:text-white hover:bg-stone-800 transition">MEESHO Case Study</button>
+                    <button onclick="switchTab('meesho')" id="nav-meesho" class="px-2.5 py-2 rounded-md text-stone-300 hover:text-white hover:bg-stone-800 transition">Case Study</button>
                     <button onclick="switchTab('regulatory')" id="nav-regulatory" class="px-2.5 py-2 rounded-md text-stone-300 hover:text-white hover:bg-stone-800 transition">SEBI Rules</button>
                 </div>
                 <div class="lg:hidden">
@@ -90,7 +89,7 @@
                         <option value="calculator">Cost & Decay Simulator</option>
                         <option value="risk">RMS & Liquidation</option>
                         <option value="operations">Contract Note & Dual Ledger Reconciliation</option>
-                        <option value="meesho">MEESHO Reconciliation Case Study</option>
+                        <option value="meesho">Case Study</option>
                         <option value="regulatory">SEBI Regulations</option>
                     </select>
                 </div>
@@ -106,7 +105,7 @@
             <div class="bg-white p-6 rounded-xl shadow-sm border border-orange-100">
                 <div class="border-b border-stone-200 pb-4 mb-4">
                     <h2 class="text-2xl font-bold text-stone-900 flex items-center gap-2">
-                        <span>🏛️</span> Institutional Overview: Zerodha Margin Trading Facility (MTF)
+                        <span>🏛️</span> Zerodha Margin Trading Facility (MTF)
                     </h2>
                     <p class="mt-2 text-sm text-stone-600 leading-relaxed">
                         This analytical hub translates the complex institutional mechanics of Zerodha's Margin Trading Facility (MTF). MTF is a SEBI-regulated leverage mechanism allowing market participants to finance up to 5× leverage on over 1,500 Group 1 equity securities. While enhancing purchasing power, it introduces strict daily carrying costs (14.60% p.a.), automated Risk Management System (RMS) liquidations, depository pledge protocols, and dual-ledger accounting friction.
@@ -511,137 +510,344 @@
         <section id="sec-operations" class="tab-content hidden space-y-6">
             <div class="bg-white p-6 rounded-xl shadow-sm border border-orange-100">
                 <div class="border-b border-stone-200 pb-4 mb-4">
-                    <h2 class="text-2xl font-bold text-stone-900 flex items-center gap-2">
-                        <span>⚙️</span> Dual-Ledger Architecture & Contract Note Reconciliation Engine
-                    </h2>
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <h2 class="text-2xl font-bold text-stone-900 flex items-center gap-2">
+                            <span>⚙️</span> Contract Note & Dual-Ledger Calculator: Buy vs Sell & MTF vs Non-MTF
+                        </h2>
+                        <span class="px-3 py-1 bg-orange-100 text-orange-900 text-xs font-bold rounded-full">Layman-Friendly Accounting Analyzer</span>
+                    </div>
                     <p class="mt-2 text-sm text-stone-600 leading-relaxed">
-                        To comply with SEBI reporting mandates, Zerodha segregates client capital into two separate ledgers: the <strong>Normal Equity Ledger</strong> (which holds cash deposits, statutory charges, brokerage, and margin transfers) and the <strong>MTF Ledger</strong> (which tracks the gross stock loan obligations and MTM credits/debits). Investors often get confused why the Contract Note total payable doesn't directly match the Normal Equity Ledger. Below is the exact accounting bridge and interactive reconciliation logic.
+                        Why does your Zerodha Ledger balance never seem to match your Contract Note total? The answer depends on whether your trade is <strong>Non-MTF (Cash CNC Delivery)</strong> or <strong>MTF (Margin Funding)</strong>, and whether you are <strong>Buying</strong> or <strong>Selling</strong>. Explore the clear rules, real trade case studies, and the interactive dual-ledger calculator below.
                     </p>
                 </div>
 
-                <!-- REAL-WORLD CASE STUDY: SBIN CONTRACT NOTE RECONCILIATION -->
-                <div class="bg-orange-50 border border-orange-200 p-5 rounded-xl mb-6">
-                    <div class="flex flex-wrap justify-between items-center gap-2 mb-3">
-                        <h3 class="text-orange-950 font-bold text-base flex items-center gap-2">
-                            <span>📝</span> Case Study: SBIN MTF Contract Note vs Dual-Ledger Reconciliation
-                        </h3>
-                        <span class="px-2.5 py-1 bg-orange-600 text-white font-mono text-xs font-bold rounded-md">Real Trade Example: 10 Qty SBIN @ ₹1010</span>
+                <!-- The Layman's Rulebook: Non-MTF vs MTF (Buy & Sell) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <!-- Non-MTF (Normal CNC) Card -->
+                    <div class="p-5 bg-stone-50 rounded-xl border border-stone-200 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-1 bg-stone-800 text-white text-xs font-bold rounded">1. Non-MTF Trades (Normal CNC)</span>
+                            <span class="text-xs text-stone-500 font-semibold">1 Ledger Only</span>
+                        </div>
+                        <p class="text-xs text-stone-700 font-medium">
+                            <strong>The Simple Rule:</strong> Contract Note Total <strong>≡ Exactly Matches</strong> your Normal Equity Ledger!
+                        </p>
+                        <div class="space-y-2 text-xs text-stone-600 font-sans">
+                            <div class="p-2.5 bg-white rounded border border-stone-200">
+                                <span class="font-bold text-stone-900">🟢 When you BUY (CNC):</span>
+                                <p class="mt-0.5">Contract note says Net Payable: <strong>₹10,135.98</strong>. Your Normal Equity Ledger is debited <strong>₹10,135.98</strong>. No mystery!</p>
+                            </div>
+                            <div class="p-2.5 bg-white rounded border border-stone-200">
+                                <span class="font-bold text-stone-900">🔴 When you SELL (CNC):</span>
+                                <p class="mt-0.5">Contract note says Net Receivable: <strong>₹6,954.05</strong>. Your Normal Equity Ledger is credited <strong>₹6,954.05</strong>. 100% direct match.</p>
+                            </div>
+                        </div>
                     </div>
-                    <p class="text-xs text-stone-700 leading-relaxed mb-4">
-                        Suppose you buy <strong>10 shares of State Bank of India (SBIN) at ₹1,010.00</strong> under MTF. Here is how the Contract Note breaks down into the two ledgers and why they sum up perfectly:
-                    </p>
 
-                    <!-- Interactive Contract Note Breakdown Calculator -->
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 bg-white p-4 rounded-xl border border-orange-200">
-                        <!-- Inputs -->
-                        <div class="lg:col-span-5 space-y-3 text-xs bg-orange-50/50 p-3 rounded-lg border border-orange-100">
-                            <p class="font-bold text-stone-900 text-sm border-b border-orange-200 pb-1">Trade Parameters</p>
-                            <div>
-                                <label class="block font-semibold text-stone-700 mb-0.5">Scrip Symbol</label>
-                                <input type="text" id="cn-scrip" value="SBIN" oninput="reconcileCN()" class="w-full p-1.5 border border-stone-300 rounded font-mono uppercase">
+                    <!-- MTF (Margin Trading) Card -->
+                    <div class="p-5 bg-orange-50/70 rounded-xl border border-orange-200 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-1 bg-orange-600 text-white text-xs font-bold rounded">2. MTF Trades (Margin Funded)</span>
+                            <span class="text-xs text-orange-800 font-semibold">2 Ledgers Split</span>
+                        </div>
+                        <p class="text-xs text-orange-950 font-medium">
+                            <strong>The Split Rule:</strong> Zerodha operates <strong>TWO ledgers</strong>: Normal Ledger (Your cash wallet) and MTF Ledger (Your loan diary).
+                        </p>
+                        <div class="space-y-2 text-xs text-stone-700 font-sans">
+                            <div class="p-2.5 bg-white rounded border border-orange-200">
+                                <span class="font-bold text-orange-950">🟢 When you BUY (MTF):</span>
+                                <p class="mt-0.5">Contract note says: ₹10,135.98. But your Normal Ledger only debits <strong>₹35.98</strong> (charges) + margin! The stock cost (<strong>₹10,100</strong>) sits in the MTF Ledger as loan.</p>
                             </div>
-                            <div class="grid grid-cols-2 gap-2">
-                                <div>
-                                    <label class="block font-semibold text-stone-700 mb-0.5">Quantity</label>
-                                    <input type="number" id="cn-qty" value="10" oninput="reconcileCN()" class="w-full p-1.5 border border-stone-300 rounded font-mono">
-                                </div>
-                                <div>
-                                    <label class="block font-semibold text-stone-700 mb-0.5">Buy Price (₹)</label>
-                                    <input type="number" id="cn-price" value="1010" oninput="reconcileCN()" class="w-full p-1.5 border border-stone-300 rounded font-mono">
-                                </div>
+                            <div class="p-2.5 bg-white rounded border border-orange-200">
+                                <span class="font-bold text-rose-900">🔴 When you SELL (MTF):</span>
+                                <p class="mt-0.5">Contract note says Receivable: <strong>₹6,954.05</strong>. But you DON'T receive ₹6,954 in your normal ledger because Zerodha takes back its loan first! You only receive: <strong>(Your Initial Margin) + (Profit/Loss) - (Charges)</strong>.</p>
                             </div>
-                            <div class="grid grid-cols-2 gap-2">
-                                <div>
-                                    <label class="block font-semibold text-stone-700 mb-0.5">Brokerage/Share (₹)</label>
-                                    <input type="number" id="cn-brok" value="2.00" step="0.5" oninput="reconcileCN()" class="w-full p-1.5 border border-stone-300 rounded font-mono">
-                                </div>
-                                <div>
-                                    <label class="block font-semibold text-stone-700 mb-0.5">Exch Charges (₹)</label>
-                                    <input type="number" id="cn-exch" value="0.31" step="0.01" oninput="reconcileCN()" class="w-full p-1.5 border border-stone-300 rounded font-mono">
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-3 gap-2 text-[11px]">
-                                <div>
-                                    <label class="block font-semibold text-stone-700">IGST (₹)</label>
-                                    <input type="number" id="cn-igst" value="3.66" step="0.01" oninput="reconcileCN()" class="w-full p-1 border border-stone-300 rounded font-mono">
-                                </div>
-                                <div>
-                                    <label class="block font-semibold text-stone-700">STT (₹)</label>
-                                    <input type="number" id="cn-stt" value="10.00" step="1" oninput="reconcileCN()" class="w-full p-1 border border-stone-300 rounded font-mono">
-                                </div>
-                                <div>
-                                    <label class="block font-semibold text-stone-700">Stamp (₹)</label>
-                                    <input type="number" id="cn-stamp" value="2.00" step="1" oninput="reconcileCN()" class="w-full p-1 border border-stone-300 rounded font-mono">
-                                </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- REAL TRADE CASE STUDY SELECTION PRESETS -->
+                <div class="bg-stone-900 text-white p-4 rounded-xl mb-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-wider text-orange-400">Real Trade Case Study Presets</p>
+                            <p class="text-xs text-stone-300">Click a preset below to instantly load real statements and see how both ledgers reconcile:</p>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="loadPreset('BUY_10')" class="preset-btn px-3 py-1.5 text-xs font-bold rounded bg-orange-600 hover:bg-orange-500 text-white transition">
+                                🟢 Buy 10 SBIN @ ₹1010
+                            </button>
+                            <button onclick="loadPreset('SELL_7')" class="preset-btn px-3 py-1.5 text-xs font-bold rounded bg-stone-700 hover:bg-stone-600 text-white transition">
+                                🔴 Sell 7 SBIN @ ₹997.50
+                            </button>
+                            <button onclick="loadPreset('SELL_4')" class="preset-btn px-3 py-1.5 text-xs font-bold rounded bg-stone-700 hover:bg-stone-600 text-white transition">
+                                🔴 Sell 4 SBIN @ ₹987.10
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- INTERACTIVE CONTRACT NOTE & RECONCILIATION CALCULATOR -->
+                <div class="bg-orange-50/40 p-5 rounded-xl border border-orange-200">
+                    <h3 class="text-base font-bold text-stone-900 mb-3 flex items-center gap-2">
+                        <span>🧮</span> Interactive Contract Note & Ledger Simulator
+                    </h3>
+
+                    <!-- Trade Type & Product Selectors -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                        <div class="p-3 bg-white rounded-lg border border-orange-200">
+                            <label class="block text-xs font-bold text-stone-700 mb-2">1. Transaction Type</label>
+                            <div class="flex gap-2">
+                                <button onclick="setTradeAction('BUY')" id="btn-action-buy" class="flex-1 py-1.5 text-xs font-bold rounded bg-emerald-600 text-white transition">
+                                    BUY Transaction
+                                </button>
+                                <button onclick="setTradeAction('SELL')" id="btn-action-sell" class="flex-1 py-1.5 text-xs font-bold rounded bg-stone-200 text-stone-700 transition">
+                                    SELL Transaction
+                                </button>
                             </div>
                         </div>
 
-                        <!-- Contract Note Breakdown Display -->
-                        <div class="lg:col-span-7 space-y-3">
-                            <p class="font-bold text-stone-900 text-sm border-b border-stone-200 pb-1 flex justify-between">
-                                <span>Contract Note Summary Statement</span>
-                                <span class="text-orange-600 font-mono" id="cn-title-display">10 SBIN @ ₹1010</span>
+                        <div class="p-3 bg-white rounded-lg border border-orange-200">
+                            <label class="block text-xs font-bold text-stone-700 mb-2">2. Product / Facility</label>
+                            <div class="flex gap-2">
+                                <button onclick="setProductMode('MTF')" id="btn-prod-mtf" class="flex-1 py-1.5 text-xs font-bold rounded bg-orange-600 text-white transition">
+                                    MTF (Margin Funding)
+                                </button>
+                                <button onclick="setProductMode('CNC')" id="btn-prod-cnc" class="flex-1 py-1.5 text-xs font-bold rounded bg-stone-200 text-stone-700 transition">
+                                    Non-MTF (Cash CNC Delivery)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Input Fields -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3 mb-4 text-xs font-mono">
+                        <div>
+                            <label class="block text-stone-700 font-sans font-semibold mb-1">Scrip Symbol</label>
+                            <input type="text" id="calc-scrip" value="SBIN" oninput="calculateUniversalReconciliation()" class="w-full p-2 border border-stone-300 rounded uppercase font-bold">
+                        </div>
+                        <div>
+                            <label class="block text-stone-700 font-sans font-semibold mb-1">Quantity</label>
+                            <input type="number" id="calc-qty" value="10" oninput="calculateUniversalReconciliation()" class="w-full p-2 border border-stone-300 rounded font-bold">
+                        </div>
+                        <div>
+                            <label class="block text-stone-700 font-sans font-semibold mb-1" id="lbl-price">Trade Price (₹)</label>
+                            <input type="number" id="calc-price" value="1010.00" step="0.5" oninput="calculateUniversalReconciliation()" class="w-full p-2 border border-stone-300 rounded font-bold">
+                        </div>
+                        <div id="wrapper-original-buy-price" class="hidden">
+                            <label class="block text-stone-700 font-sans font-semibold mb-1">Original Buy Price (₹)</label>
+                            <input type="number" id="calc-orig-buy-price" value="1010.00" step="0.5" oninput="calculateUniversalReconciliation()" class="w-full p-2 border border-stone-300 rounded font-bold bg-amber-50">
+                        </div>
+                        <div>
+                            <label class="block text-stone-700 font-sans font-semibold mb-1">Brokerage Total (₹)</label>
+                            <input type="number" id="calc-brokerage" value="20.00" step="0.01" oninput="calculateUniversalReconciliation()" class="w-full p-2 border border-stone-300 rounded font-bold">
+                        </div>
+                        <div>
+                            <label class="block text-stone-700 font-sans font-semibold mb-1">Exchange Charges (₹)</label>
+                            <input type="number" id="calc-exch" value="0.31" step="0.01" oninput="calculateUniversalReconciliation()" class="w-full p-2 border border-stone-300 rounded">
+                        </div>
+                        <div>
+                            <label class="block text-stone-700 font-sans font-semibold mb-1">IGST (18%) (₹)</label>
+                            <input type="number" id="calc-igst" value="3.66" step="0.01" oninput="calculateUniversalReconciliation()" class="w-full p-2 border border-stone-300 rounded">
+                        </div>
+                        <div>
+                            <label class="block text-stone-700 font-sans font-semibold mb-1">STT Tax (₹)</label>
+                            <input type="number" id="calc-stt" value="10.00" step="1" oninput="calculateUniversalReconciliation()" class="w-full p-2 border border-stone-300 rounded">
+                        </div>
+                        <div>
+                            <label class="block text-stone-700 font-sans font-semibold mb-1">Stamp Duty (₹)</label>
+                            <input type="number" id="calc-stamp" value="2.00" step="1" oninput="calculateUniversalReconciliation()" class="w-full p-2 border border-stone-300 rounded">
+                        </div>
+                        <div>
+                            <label class="block text-stone-700 font-sans font-semibold mb-1">SEBI Fees (₹)</label>
+                            <input type="number" id="calc-sebi" value="0.01" step="0.01" oninput="calculateUniversalReconciliation()" class="w-full p-2 border border-stone-300 rounded">
+                        </div>
+                        <div id="wrapper-margin-pct">
+                            <label class="block text-stone-700 font-sans font-semibold mb-1">MTF Margin Req (%)</label>
+                            <input type="number" id="calc-margin-pct" value="22.80" step="0.1" oninput="calculateUniversalReconciliation()" class="w-full p-2 border border-stone-300 rounded text-orange-700 font-bold">
+                        </div>
+                    </div>
+
+                    <!-- DUAL DISPLAY: CONTRACT NOTE VS LEDGERS -->
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 mt-5">
+                        
+                        <!-- Panel A: Contract Note Summary -->
+                        <div class="lg:col-span-5 bg-white p-4 rounded-xl border border-stone-200 shadow-sm space-y-3">
+                            <div class="flex items-center justify-between border-b border-stone-200 pb-2">
+                                <h4 class="font-bold text-stone-900 text-sm flex items-center gap-1.5">
+                                    <span>📄</span> Contract Note Statement
+                                </h4>
+                                <span id="cn-badge-type" class="px-2 py-0.5 text-[10px] font-bold rounded bg-emerald-100 text-emerald-800">BUY TRADE</span>
+                            </div>
+                            
+                            <table class="w-full text-xs font-mono">
+                                <tbody class="divide-y divide-stone-100">
+                                    <tr>
+                                        <td class="py-1.5 text-stone-600">Pay in / Pay out Obligation (Gross Trade):</td>
+                                        <td class="py-1.5 text-right font-bold text-stone-900" id="disp-calc-gross">₹10,100.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-1 text-stone-600">Brokerage (Taxable Supply):</td>
+                                        <td class="py-1 text-right text-stone-800" id="disp-calc-brok">₹20.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-1 text-stone-600">Exchange Charges + SEBI Fees:</td>
+                                        <td class="py-1 text-right text-stone-800" id="disp-calc-exch">₹0.32</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-1 text-stone-600">GST (IGST @ 18%):</td>
+                                        <td class="py-1 text-right text-stone-800" id="disp-calc-igst">₹3.66</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-1 text-stone-600">STT + Stamp Duty:</td>
+                                        <td class="py-1 text-right text-stone-800" id="disp-calc-stt">₹12.00</td>
+                                    </tr>
+                                    <tr class="bg-orange-50 font-bold">
+                                        <td class="py-2 px-1 text-stone-900" id="lbl-calc-net">Net Payable by Client:</td>
+                                        <td class="py-2 px-1 text-right text-sm text-orange-700" id="disp-calc-net">₹10,135.98</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p class="text-[11px] text-stone-500 italic" id="cn-footer-note">
+                                *This is the single total generated by the exchange clearing corporation.
                             </p>
-                            <div class="overflow-x-auto text-xs font-mono">
-                                <table class="w-full border-collapse">
-                                    <tbody class="divide-y divide-stone-200">
-                                        <tr>
-                                            <td class="py-1 text-stone-600">Pay in / Pay out Obligation (Gross Trade Excl. Charges)</td>
-                                            <td class="py-1 text-right font-bold text-stone-900" id="disp-cn-gross">₹10,100.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="py-1 text-stone-600">Taxable Value of Supply (Brokerage)</td>
-                                            <td class="py-1 text-right text-stone-800" id="disp-cn-brok">₹20.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="py-1 text-stone-600">Exchange Transaction Charges + SEBI Fees</td>
-                                            <td class="py-1 text-right text-stone-800" id="disp-cn-exch">₹0.32</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="py-1 text-stone-600">IGST (@18% on Brokerage & Exchange Fees)</td>
-                                            <td class="py-1 text-right text-stone-800" id="disp-cn-igst">₹3.66</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="py-1 text-stone-600">Securities Transaction Tax (STT) + Stamp Duty</td>
-                                            <td class="py-1 text-right text-stone-800" id="disp-cn-stt">₹12.00</td>
-                                        </tr>
-                                        <tr class="bg-orange-100/70 font-bold text-stone-900">
-                                            <td class="py-1.5 px-1">Net Amount Payable by Client on Contract Note</td>
-                                            <td class="py-1.5 px-1 text-right text-orange-700 text-sm" id="disp-cn-total">₹10,135.98</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                        </div>
+
+                        <!-- Panel B: Zerodha Ledgers Reconciliation View -->
+                        <div class="lg:col-span-7 space-y-3">
+                            <div class="flex items-center justify-between border-b border-stone-200 pb-2">
+                                <h4 class="font-bold text-stone-900 text-sm flex items-center gap-1.5">
+                                    <span>📊</span> Zerodha Ledger Postings Breakdown
+                                </h4>
+                                <span id="ledger-badge-mode" class="px-2 py-0.5 text-[10px] font-bold rounded bg-orange-600 text-white">MTF DUAL-LEDGER MODE</span>
                             </div>
+
+                            <!-- Ledger Breakdown Cards -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono">
+                                <!-- Card 1: Normal Equity Ledger -->
+                                <div class="p-3 bg-white rounded-lg border border-orange-200 shadow-sm space-y-1.5">
+                                    <div class="flex items-center justify-between">
+                                        <span class="font-sans font-bold text-stone-900 text-xs">Normal Equity Ledger</span>
+                                        <span class="text-[10px] bg-stone-100 text-stone-600 px-1.5 py-0.5 rounded">All Segments</span>
+                                    </div>
+                                    <p class="text-stone-500 font-sans text-[11px]" id="normal-ledger-desc">Net settlement for charges & statutory taxes.</p>
+                                    <div class="p-2 bg-stone-50 rounded border border-stone-200 space-y-1">
+                                        <div class="flex justify-between">
+                                            <span class="text-stone-600 font-sans" id="lbl-norm-entry-1">Net Settlement:</span>
+                                            <span class="font-bold text-stone-900" id="val-norm-entry-1">Debit: ₹35.98</span>
+                                        </div>
+                                        <div class="flex justify-between" id="row-norm-entry-2">
+                                            <span class="text-stone-600 font-sans">Initial Margin Blocked:</span>
+                                            <span class="font-bold text-orange-700" id="val-norm-entry-2">Debit: ₹2,302.80</span>
+                                        </div>
+                                    </div>
+                                    <p class="font-sans font-bold text-xs" id="lbl-norm-cash-impact">Total Cash Impact: -₹2,338.78</p>
+                                </div>
+
+                                <!-- Card 2: MTF Ledger (or N/A for CNC) -->
+                                <div id="card-mtf-ledger" class="p-3 bg-white rounded-lg border border-amber-300 shadow-sm space-y-1.5">
+                                    <div class="flex items-center justify-between">
+                                        <span class="font-sans font-bold text-amber-950 text-xs">MTF Ledger</span>
+                                        <span class="text-[10px] bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded">Category: MTF</span>
+                                    </div>
+                                    <p class="text-stone-500 font-sans text-[11px]">Loan book tracking gross trade values & margin credits.</p>
+                                    <div class="p-2 bg-amber-50/60 rounded border border-amber-200 space-y-1">
+                                        <div class="flex justify-between">
+                                            <span class="text-stone-600 font-sans" id="lbl-mtf-entry-1">Gross Obligation:</span>
+                                            <span class="font-bold text-stone-900" id="val-mtf-entry-1">Debit: ₹10,100.00</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-stone-600 font-sans" id="lbl-mtf-entry-2">Margin Received:</span>
+                                            <span class="font-bold text-emerald-700" id="val-mtf-entry-2">Credit: ₹2,302.80</span>
+                                        </div>
+                                    </div>
+                                    <p class="font-sans font-bold text-xs text-amber-900" id="lbl-mtf-loan-impact">Funded Loan Amount: ₹7,797.20</p>
+                                </div>
+                            </div>
+
+                            <!-- THE RECONCILIATION EQUATION PROOF IN LAYMAN WORDS -->
+                            <div class="p-3.5 bg-stone-900 text-white rounded-xl space-y-1.5">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-bold uppercase tracking-wider text-orange-400 font-mono">Layman Reconciliation Mathematical Proof</span>
+                                    <span class="text-xs text-emerald-400 font-bold font-mono">100% MATCH</span>
+                                </div>
+                                <div class="p-2.5 bg-stone-800 rounded font-mono text-xs text-stone-200" id="proof-equation-text">
+                                    Contract Note (₹10,135.98) = MTF Ledger Gross (₹10,100.00) + Normal Ledger Charges (₹35.98)
+                                </div>
+                                <p class="text-[11px] text-stone-300 font-sans leading-relaxed" id="proof-layman-explanation">
+                                    <strong>In Plain Words:</strong> Your normal ledger only shows ₹35.98 because the remaining ₹10,100.00 was moved to your MTF Ledger so Zerodha could lend you 77.2% of the money!
+                                </p>
+                            </div>
+
                         </div>
                     </div>
+                </div>
 
-                    <!-- Visual Reconciliation Bridge Table -->
-                    <div class="mt-4 p-4 bg-white rounded-xl border border-orange-200">
-                        <h4 class="font-bold text-stone-900 text-sm mb-2 flex items-center gap-1.5">
-                            <span>🧩</span> Dual Ledger Accounting Bridge: Why Ledgers Match Contract Note
-                        </h4>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-mono">
-                            <div class="p-3 bg-amber-50 border border-amber-200 rounded-lg space-y-1">
-                                <p class="font-sans font-bold text-amber-900 text-xs">1. MTF Ledger Entry</p>
-                                <p class="text-stone-600">Category: <span class="font-bold">MTF</span></p>
-                                <p class="text-amber-900 font-bold text-sm" id="bridge-mtf-val">Debit: ₹10,100.00</p>
-                                <p class="font-sans text-[11px] text-stone-500">Reflects Gross Obligation for MTF trade.</p>
-                            </div>
-
-                            <div class="p-3 bg-orange-50 border border-orange-200 rounded-lg space-y-1">
-                                <p class="font-sans font-bold text-orange-950 text-xs">2. Normal Equity Ledger Entry</p>
-                                <p class="text-stone-600">Category: <span class="font-bold">All Segments</span></p>
-                                <p class="text-orange-700 font-bold text-sm" id="bridge-norm-val">Debit: ₹35.98</p>
-                                <p class="font-sans text-[11px] text-stone-500">Reflects Net Equity Settlement (Brokerage + Levies).</p>
-                            </div>
-
-                            <div class="p-3 bg-stone-900 text-white rounded-lg space-y-1">
-                                <p class="font-sans font-bold text-orange-400 text-xs">3. Reconciliation Sum</p>
-                                <p class="text-stone-300">MTF Ledger + Normal Ledger</p>
-                                <p class="text-emerald-400 font-bold text-sm" id="bridge-sum-val">Sum = ₹10,135.98</p>
-                                <p class="font-sans text-[11px] text-stone-300">≡ Exact Match with Contract Note Total!</p>
-                            </div>
-                        </div>
+                <!-- SIDE-BY-SIDE SUMMARY TABLE: THE 3 REAL CASE STUDIES -->
+                <div class="mt-6">
+                    <h3 class="text-base font-bold text-stone-900 mb-2">Real Trade Statement Comparison Table</h3>
+                    <p class="text-xs text-stone-600 mb-3">
+                        Direct reconciliation comparison between the actual trade contract notes and what appears on the Zerodha Console ledgers:
+                    </p>
+                    <div class="overflow-x-auto custom-scrollbar">
+                        <table class="w-full text-left text-xs text-stone-700">
+                            <thead class="bg-orange-100/60 text-stone-900 uppercase">
+                                <tr>
+                                    <th class="p-3">Trade Scenario</th>
+                                    <th class="p-3">Qty & Price</th>
+                                    <th class="p-3 text-right">Contract Note Total</th>
+                                    <th class="p-3 text-right">MTF Ledger Entry</th>
+                                    <th class="p-3 text-right">Normal Equity Ledger Entry</th>
+                                    <th class="p-3">Layman Why / Reconciliation</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-orange-100 font-mono">
+                                <!-- Buy 10 SBIN -->
+                                <tr class="hover:bg-orange-50/40">
+                                    <td class="p-3 font-bold text-emerald-700">Buy SBIN (MTF)</td>
+                                    <td class="p-3 font-sans">10 Qty @ ₹1010.00</td>
+                                    <td class="p-3 text-right font-bold text-stone-900">₹10,135.98 (Payable)</td>
+                                    <td class="p-3 text-right text-amber-900">Debit ₹10,100.00 (Gross)</td>
+                                    <td class="p-3 text-right text-rose-700">Debit ₹35.98 (Charges)</td>
+                                    <td class="p-3 font-sans text-[11px] text-stone-600">
+                                        Contract note ₹10,135.98 = MTF Gross ₹10,100 + Normal Ledger Charges ₹35.98. Margin ₹2,302.80 debited separately.
+                                    </td>
+                                </tr>
+                                <!-- Sell 7 SBIN -->
+                                <tr class="hover:bg-orange-50/40">
+                                    <td class="p-3 font-bold text-rose-700">Sell SBIN (MTF)</td>
+                                    <td class="p-3 font-sans">7 Qty @ ₹997.50</td>
+                                    <td class="p-3 text-right font-bold text-stone-900">₹6,954.05 (Receivable)</td>
+                                    <td class="p-3 text-right text-amber-900">Credit ₹6,982.50 (Gross)</td>
+                                    <td class="p-3 text-right text-emerald-700">Net Margin + P&L Release</td>
+                                    <td class="p-3 font-sans text-[11px] text-stone-600">
+                                        Gross ₹6,982.50 clears Zerodha's funded loan. Client receives Initial Margin minus small loss & charges in Normal Ledger.
+                                    </td>
+                                </tr>
+                                <!-- Sell 4 SBIN -->
+                                <tr class="hover:bg-orange-50/40">
+                                    <td class="p-3 font-bold text-rose-700">Sell SBIN (MTF)</td>
+                                    <td class="p-3 font-sans">4 Qty @ ₹987.10</td>
+                                    <td class="p-3 text-right font-bold text-stone-900">₹3,930.27 (Receivable)</td>
+                                    <td class="p-3 text-right text-amber-900">Credit ₹3,948.40 (Gross)</td>
+                                    <td class="p-3 text-right text-emerald-700">Net Margin + P&L Release</td>
+                                    <td class="p-3 font-sans text-[11px] text-stone-600">
+                                        Zerodha recovers loan on 4 shares. Remaining credit equals initial margin released adjusted for price difference and ₹18.13 fees.
+                                    </td>
+                                </tr>
+                                <!-- Normal CNC Buy/Sell for contrast -->
+                                <tr class="hover:bg-orange-50/40 bg-stone-50">
+                                    <td class="p-3 font-bold text-stone-700">Any CNC Trade (Non-MTF)</td>
+                                    <td class="p-3 font-sans">Buy or Sell</td>
+                                    <td class="p-3 text-right font-bold text-stone-900">Exact Total (₹)</td>
+                                    <td class="p-3 text-right text-stone-400">No MTF Ledger</td>
+                                    <td class="p-3 text-right font-bold text-stone-900">Exact Match (100%)</td>
+                                    <td class="p-3 font-sans text-[11px] text-stone-600">
+                                        Non-MTF has NO loan. Contract Note total matches Normal Equity Ledger directly without any split!
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
@@ -701,13 +907,13 @@
             </div>
         </section>
 
-        <!-- ================= SECTION 6: MEESHO RECONCILIATION CASE STUDY ================= -->
+        <!-- ================= SECTION 6: CASE STUDY ================= -->
         <section id="sec-meesho" class="tab-content hidden space-y-6">
             <div class="bg-white p-6 rounded-xl shadow-sm border border-orange-100">
                 <div class="border-b border-stone-200 pb-4 mb-4">
                     <div class="flex flex-wrap items-center justify-between gap-2">
                         <h2 class="text-2xl font-bold text-stone-900 flex items-center gap-2">
-                            <span>💡</span> MEESHO 25,000 Shares Settlement Reconciliation
+                            <span>💡</span> Case Study: 25,000 Shares Settlement Reconciliation
                         </h2>
                         <span class="px-3 py-1 bg-emerald-100 text-emerald-800 font-bold text-xs rounded-full">REAL-WORLD RECONCILIATION CASE STUDY</span>
                     </div>
@@ -1205,33 +1411,245 @@
             document.getElementById('rms-drop-pct').innerText = `-${reqStockDropPct.toFixed(2)}% Stock Drop`;
         }
 
-        // ================= SECTION 5: CONTRACT NOTE RECONCILIATION =================
-        function reconcileCN() {
-            const scrip = document.getElementById('cn-scrip').value.toUpperCase() || "SBIN";
-            const qty = parseFloat(document.getElementById('cn-qty').value) || 10;
-            const price = parseFloat(document.getElementById('cn-price').value) || 1010;
-            const brokPerShare = parseFloat(document.getElementById('cn-brok').value) || 2.00;
-            const exch = parseFloat(document.getElementById('cn-exch').value) || 0.31;
-            const igst = parseFloat(document.getElementById('cn-igst').value) || 3.66;
-            const stt = parseFloat(document.getElementById('cn-stt').value) || 10.00;
-            const stamp = parseFloat(document.getElementById('cn-stamp').value) || 2.00;
+        // ================= SECTION 5: UNIVERSAL CONTRACT NOTE & LEDGER RECONCILER =================
+        let currentTradeAction = "BUY"; // "BUY" or "SELL"
+        let currentProductMode = "MTF"; // "MTF" or "CNC"
+
+        function setTradeAction(action) {
+            currentTradeAction = action;
+            const btnBuy = document.getElementById('btn-action-buy');
+            const btnSell = document.getElementById('btn-action-sell');
+            const origBuyWrapper = document.getElementById('wrapper-original-buy-price');
+            const lblPrice = document.getElementById('lbl-price');
+
+            if (action === 'BUY') {
+                btnBuy.className = "flex-1 py-1.5 text-xs font-bold rounded bg-emerald-600 text-white transition";
+                btnSell.className = "flex-1 py-1.5 text-xs font-bold rounded bg-stone-200 text-stone-700 transition";
+                origBuyWrapper.classList.add('hidden');
+                lblPrice.innerText = "Trade Buy Price (₹)";
+            } else {
+                btnSell.className = "flex-1 py-1.5 text-xs font-bold rounded bg-rose-600 text-white transition";
+                btnBuy.className = "flex-1 py-1.5 text-xs font-bold rounded bg-stone-200 text-stone-700 transition";
+                origBuyWrapper.classList.remove('hidden');
+                lblPrice.innerText = "Trade Sell Price (₹)";
+            }
+            calculateUniversalReconciliation();
+        }
+
+        function setProductMode(mode) {
+            currentProductMode = mode;
+            const btnMtf = document.getElementById('btn-prod-mtf');
+            const btnCnc = document.getElementById('btn-prod-cnc');
+            const marginWrapper = document.getElementById('wrapper-margin-pct');
+            const mtfCard = document.getElementById('card-mtf-ledger');
+
+            if (mode === 'MTF') {
+                btnMtf.className = "flex-1 py-1.5 text-xs font-bold rounded bg-orange-600 text-white transition";
+                btnCnc.className = "flex-1 py-1.5 text-xs font-bold rounded bg-stone-200 text-stone-700 transition";
+                marginWrapper.classList.remove('hidden');
+                mtfCard.classList.remove('hidden');
+                document.getElementById('ledger-badge-mode').innerText = "MTF DUAL-LEDGER MODE";
+                document.getElementById('ledger-badge-mode').className = "px-2 py-0.5 text-[10px] font-bold rounded bg-orange-600 text-white";
+            } else {
+                btnCnc.className = "flex-1 py-1.5 text-xs font-bold rounded bg-stone-800 text-white transition";
+                btnMtf.className = "flex-1 py-1.5 text-xs font-bold rounded bg-stone-200 text-stone-700 transition";
+                marginWrapper.classList.add('hidden');
+                mtfCard.classList.add('hidden');
+                document.getElementById('ledger-badge-mode').innerText = "NON-MTF SINGLE-LEDGER MODE";
+                document.getElementById('ledger-badge-mode').className = "px-2 py-0.5 text-[10px] font-bold rounded bg-stone-800 text-white";
+            }
+            calculateUniversalReconciliation();
+        }
+
+        function loadPreset(presetKey) {
+            if (presetKey === 'BUY_10') {
+                setTradeAction('BUY');
+                setProductMode('MTF');
+                document.getElementById('calc-scrip').value = "SBIN";
+                document.getElementById('calc-qty').value = "10";
+                document.getElementById('calc-price').value = "1010.00";
+                document.getElementById('calc-brokerage').value = "20.00";
+                document.getElementById('calc-exch').value = "0.31";
+                document.getElementById('calc-igst').value = "3.66";
+                document.getElementById('calc-stt').value = "10.00";
+                document.getElementById('calc-stamp').value = "2.00";
+                document.getElementById('calc-sebi').value = "0.01";
+                document.getElementById('calc-margin-pct').value = "22.80";
+            } else if (presetKey === 'SELL_7') {
+                setTradeAction('SELL');
+                setProductMode('MTF');
+                document.getElementById('calc-scrip').value = "SBIN";
+                document.getElementById('calc-qty').value = "7";
+                document.getElementById('calc-price').value = "997.50";
+                document.getElementById('calc-orig-buy-price').value = "1010.00";
+                document.getElementById('calc-brokerage').value = "17.96";
+                document.getElementById('calc-exch').value = "0.21";
+                document.getElementById('calc-igst').value = "3.27";
+                document.getElementById('calc-stt').value = "7.00";
+                document.getElementById('calc-stamp').value = "0.00";
+                document.getElementById('calc-sebi').value = "0.01";
+                document.getElementById('calc-margin-pct').value = "22.80";
+            } else if (presetKey === 'SELL_4') {
+                setTradeAction('SELL');
+                setProductMode('MTF');
+                document.getElementById('calc-scrip').value = "SBIN";
+                document.getElementById('calc-qty').value = "4";
+                document.getElementById('calc-price').value = "987.10";
+                document.getElementById('calc-orig-buy-price').value = "1010.00";
+                document.getElementById('calc-brokerage').value = "11.85";
+                document.getElementById('calc-exch').value = "0.12";
+                document.getElementById('calc-igst').value = "2.15";
+                document.getElementById('calc-stt').value = "4.00";
+                document.getElementById('calc-stamp').value = "0.00";
+                document.getElementById('calc-sebi').value = "0.00";
+                document.getElementById('calc-margin-pct').value = "22.80";
+            }
+            calculateUniversalReconciliation();
+        }
+
+        function calculateUniversalReconciliation() {
+            const scrip = (document.getElementById('calc-scrip').value || "SBIN").toUpperCase();
+            const qty = parseFloat(document.getElementById('calc-qty').value) || 1;
+            const price = parseFloat(document.getElementById('calc-price').value) || 1000;
+            const origBuyPrice = parseFloat(document.getElementById('calc-orig-buy-price').value) || 1010;
+            const brok = parseFloat(document.getElementById('calc-brokerage').value) || 20;
+            const exch = parseFloat(document.getElementById('calc-exch').value) || 0;
+            const igst = parseFloat(document.getElementById('calc-igst').value) || 0;
+            const stt = parseFloat(document.getElementById('calc-stt').value) || 0;
+            const stamp = parseFloat(document.getElementById('calc-stamp').value) || 0;
+            const sebi = parseFloat(document.getElementById('calc-sebi').value) || 0;
+            const marginPct = parseFloat(document.getElementById('calc-margin-pct').value) || 25;
 
             const grossTradeVal = qty * price;
-            const totalBrok = qty * brokPerShare;
-            const totalCharges = totalBrok + exch + igst + stt + stamp;
-            const netPayableCN = grossTradeVal + totalCharges;
+            const totalCharges = brok + exch + igst + stt + stamp + sebi;
 
-            document.getElementById('cn-title-display').innerText = `${qty} ${scrip} @ ₹${price.toFixed(2)}`;
-            document.getElementById('disp-cn-gross').innerText = `₹${grossTradeVal.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
-            document.getElementById('disp-cn-brok').innerText = `₹${totalBrok.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
-            document.getElementById('disp-cn-exch').innerText = `₹${exch.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
-            document.getElementById('disp-cn-igst').innerText = `₹${igst.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
-            document.getElementById('disp-cn-stt').innerText = `₹${(stt + stamp).toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
-            document.getElementById('disp-cn-total').innerText = `₹${netPayableCN.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+            // 1. Contract Note Computations
+            let cnNetVal = 0;
+            const cnBadge = document.getElementById('cn-badge-type');
+            const lblCalcNet = document.getElementById('lbl-calc-net');
+            const dispCalcNet = document.getElementById('disp-calc-net');
 
-            document.getElementById('bridge-mtf-val').innerText = `Debit: ₹${grossTradeVal.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
-            document.getElementById('bridge-norm-val').innerText = `Debit: ₹${totalCharges.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
-            document.getElementById('bridge-sum-val').innerText = `Sum = ₹${netPayableCN.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+            if (currentTradeAction === 'BUY') {
+                cnNetVal = grossTradeVal + totalCharges;
+                cnBadge.innerText = `BUY TRADE: ${qty} ${scrip}`;
+                cnBadge.className = "px-2 py-0.5 text-[10px] font-bold rounded bg-emerald-100 text-emerald-800";
+                lblCalcNet.innerText = "Net Amount Payable by Client:";
+                dispCalcNet.className = "py-2 px-1 text-right text-sm text-rose-700 font-bold";
+                dispCalcNet.innerText = `₹${cnNetVal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            } else {
+                cnNetVal = grossTradeVal - totalCharges;
+                cnBadge.innerText = `SELL TRADE: ${qty} ${scrip}`;
+                cnBadge.className = "px-2 py-0.5 text-[10px] font-bold rounded bg-rose-100 text-rose-800";
+                lblCalcNet.innerText = "Net Amount Receivable by Client:";
+                dispCalcNet.className = "py-2 px-1 text-right text-sm text-emerald-700 font-bold";
+                dispCalcNet.innerText = `₹${cnNetVal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            }
+
+            document.getElementById('disp-calc-gross').innerText = `₹${grossTradeVal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('disp-calc-brok').innerText = `₹${brok.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('disp-calc-exch').innerText = `₹${(exch + sebi).toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('disp-calc-igst').innerText = `₹${igst.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('disp-calc-stt').innerText = `₹${(stt + stamp).toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+
+            // 2. Ledger Postings & Reconciliation Logic
+            const normalDesc = document.getElementById('normal-ledger-desc');
+            const lblNorm1 = document.getElementById('lbl-norm-entry-1');
+            const valNorm1 = document.getElementById('val-norm-entry-1');
+            const rowNorm2 = document.getElementById('row-norm-entry-2');
+            const valNorm2 = document.getElementById('val-norm-entry-2');
+            const lblNormImpact = document.getElementById('lbl-norm-cash-impact');
+
+            const lblMtf1 = document.getElementById('lbl-mtf-entry-1');
+            const valMtf1 = document.getElementById('val-mtf-entry-1');
+            const lblMtf2 = document.getElementById('lbl-mtf-entry-2');
+            const valMtf2 = document.getElementById('val-mtf-entry-2');
+            const lblMtfLoan = document.getElementById('lbl-mtf-loan-impact');
+
+            const proofText = document.getElementById('proof-equation-text');
+            const proofExplanation = document.getElementById('proof-layman-explanation');
+
+            if (currentProductMode === 'CNC') {
+                // Non-MTF mode: 1-to-1 match
+                normalDesc.innerText = "Single ledger: Exactly matches the exchange Contract Note!";
+                rowNorm2.classList.add('hidden');
+
+                if (currentTradeAction === 'BUY') {
+                    lblNorm1.innerText = "Net Equity Settlement:";
+                    valNorm1.innerText = `Debit: ₹${cnNetVal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                    valNorm1.className = "font-bold text-rose-700";
+                    lblNormImpact.innerText = `Total Cash Debited: ₹${cnNetVal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                    lblNormImpact.className = "font-sans font-bold text-xs text-rose-700";
+
+                    proofText.innerText = `Contract Note Payable (₹${cnNetVal.toFixed(2)}) ≡ Normal Equity Ledger Debit (₹${cnNetVal.toFixed(2)})`;
+                    proofExplanation.innerHTML = `<strong>In Layman Words:</strong> For standard delivery (CNC) buys, there is no MTF loan. The full purchase cost including all taxes and brokerage is debited directly from your trading balance.`;
+                } else {
+                    lblNorm1.innerText = "Net Equity Settlement:";
+                    valNorm1.innerText = `Credit: ₹${cnNetVal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                    valNorm1.className = "font-bold text-emerald-700";
+                    lblNormImpact.innerText = `Total Cash Credited: ₹${cnNetVal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                    lblNormImpact.className = "font-sans font-bold text-xs text-emerald-700";
+
+                    proofText.innerText = `Contract Note Receivable (₹${cnNetVal.toFixed(2)}) ≡ Normal Equity Ledger Credit (₹${cnNetVal.toFixed(2)})`;
+                    proofExplanation.innerHTML = `<strong>In Layman Words:</strong> For standard delivery (CNC) sales, you receive 100% of your net sale proceeds directly into your Normal Equity Ledger on settlement. No loan deductions occur.`;
+                }
+            } else {
+                // MTF Mode: Dual-ledger Split
+                rowNorm2.classList.remove('hidden');
+
+                if (currentTradeAction === 'BUY') {
+                    const clientMargin = grossTradeVal * (marginPct / 100);
+                    const loanVal = grossTradeVal - clientMargin;
+
+                    normalDesc.innerText = "Debits statutory charges & transfers margin to MTF.";
+                    lblNorm1.innerText = "Charges Settlement:";
+                    valNorm1.innerText = `Debit: ₹${totalCharges.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                    valNorm1.className = "font-bold text-stone-900";
+
+                    valNorm2.innerText = `Debit: ₹${clientMargin.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                    valNorm2.className = "font-bold text-orange-700";
+
+                    const totalCashOut = totalCharges + clientMargin;
+                    lblNormImpact.innerText = `Total Cash Blocked: ₹${totalCashOut.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                    lblNormImpact.className = "font-sans font-bold text-xs text-orange-700";
+
+                    lblMtf1.innerText = "Gross Obligation:";
+                    valMtf1.innerText = `Debit: ₹${grossTradeVal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                    lblMtf2.innerText = "Initial Margin Received:";
+                    valMtf2.innerText = `Credit: ₹${clientMargin.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                    lblMtfLoan.innerText = `Funded Loan Remaining: ₹${loanVal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+
+                    proofText.innerHTML = `Contract Note Total (₹${cnNetVal.toFixed(2)}) = MTF Ledger Gross (₹${grossTradeVal.toFixed(2)}) + Normal Ledger Charges (₹${totalCharges.toFixed(2)})`;
+                    proofExplanation.innerHTML = `<strong>In Layman Words:</strong> You don't pay ₹${cnNetVal.toFixed(2)} from your cash balance! Zerodha puts the stock cost (₹${grossTradeVal.toFixed(2)}) in your MTF loan diary and lends you ₹${loanVal.toFixed(2)}. Your cash wallet only pays ₹${totalCharges.toFixed(2)} for government charges/brokerage plus your ₹${clientMargin.toFixed(2)} initial margin.`;
+                } else {
+                    // MTF SELL
+                    const origTotalBuy = qty * origBuyPrice;
+                    const origMargin = origTotalBuy * (marginPct / 100);
+                    const origLoan = origTotalBuy - origMargin;
+                    const realizedPnl = grossTradeVal - origTotalBuy; // gain or loss
+                    const netCashReleased = origMargin + realizedPnl - totalCharges;
+
+                    normalDesc.innerText = "Receives margin released & net trade P&L.";
+                    lblNorm1.innerText = "Net MTF Settlement Credit:";
+                    valNorm1.innerText = `Credit: ₹${Math.max(0, netCashReleased).toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                    valNorm1.className = "font-bold text-emerald-700";
+
+                    rowNorm2.classList.remove('hidden');
+                    valNorm2.innerText = `Realized P&L: ${realizedPnl >= 0 ? '+' : ''}₹${realizedPnl.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                    valNorm2.className = realizedPnl >= 0 ? "font-bold text-emerald-600" : "font-bold text-rose-600";
+
+                    lblNormImpact.innerText = `Cash Credited to Wallet: ₹${netCashReleased.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                    lblNormImpact.className = "font-sans font-bold text-xs text-emerald-700";
+
+                    lblMtf1.innerText = "Gross Sale Obligation:";
+                    valMtf1.innerText = `Credit: ₹${grossTradeVal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                    lblMtf2.innerText = "Repays Funded Loan:";
+                    valMtf2.innerText = `Debit: -₹${origLoan.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                    lblMtfLoan.innerText = `Loan Closed for ${qty} shares (Balance = ₹0.00)`;
+
+                    proofText.innerHTML = `Contract Note Receivable (₹${cnNetVal.toFixed(2)}) = Loan Repaid to Zerodha (₹${origLoan.toFixed(2)}) + Net Cash Released to Equity Ledger (₹${netCashReleased.toFixed(2)})`;
+                    proofExplanation.innerHTML = `<strong>In Layman Words:</strong> Why doesn't your cash ledger show ₹${cnNetVal.toFixed(2)}? Because ₹${origLoan.toFixed(2)} was Zerodha's borrowed money! Zerodha recovers its loan first inside the MTF ledger, and your Normal Equity wallet receives your initial margin (₹${origMargin.toFixed(2)}) adjusted for your trade ${realizedPnl >= 0 ? 'profit' : 'loss'} (₹${realizedPnl.toFixed(2)}) and fees (₹${totalCharges.toFixed(2)}).`;
+                }
+            }
         }
 
         // ================= SECTION 6: MEESHO WATERFALL CHART =================
@@ -1275,7 +1693,7 @@
             initScripChart();
             runCalculator();
             calcRMS();
-            reconcileCN();
+            calculateUniversalReconciliation();
         });
     </script>
 </body>

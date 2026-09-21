@@ -76,10 +76,11 @@
                 <div class="hidden lg:flex space-x-1 text-xs font-medium">
                     <button onclick="switchTab('overview')" id="nav-overview" class="px-2.5 py-2 rounded-md text-stone-300 hover:text-white hover:bg-stone-800 transition">Overview</button>
                     <button onclick="switchTab('position')" id="nav-position" class="px-2.5 py-2 rounded-md text-stone-300 hover:text-white hover:bg-stone-800 transition">Position & Obligation</button>
+                    <button onclick="switchTab('scrip-interest')" id="nav-scrip-interest" class="px-2.5 py-2 rounded-md bg-orange-600 text-white font-bold transition hover:bg-orange-500">Scrip Interest Checker</button>
                     <button onclick="switchTab('scrips')" id="nav-scrips" class="px-2.5 py-2 rounded-md text-stone-300 hover:text-white hover:bg-stone-800 transition">Leverage Finder</button>
                     <button onclick="switchTab('calculator')" id="nav-calculator" class="px-2.5 py-2 rounded-md text-stone-300 hover:text-white hover:bg-stone-800 transition">Cost & Decay</button>
                     <button onclick="switchTab('risk')" id="nav-risk" class="px-2.5 py-2 rounded-md text-stone-300 hover:text-white hover:bg-stone-800 transition">RMS & Risk</button>
-                    <button onclick="switchTab('operations')" id="nav-operations" class="px-2.5 py-2 rounded-md bg-orange-600 text-white font-bold transition hover:bg-orange-500">Contract Note & Ledgers</button>
+                    <button onclick="switchTab('operations')" id="nav-operations" class="px-2.5 py-2 rounded-md text-stone-300 hover:text-white hover:bg-stone-800 transition">Contract Note & Ledgers</button>
                     <button onclick="switchTab('meesho')" id="nav-meesho" class="px-2.5 py-2 rounded-md text-stone-300 hover:text-white hover:bg-stone-800 transition">Case Study</button>
                     <button onclick="switchTab('regulatory')" id="nav-regulatory" class="px-2.5 py-2 rounded-md text-stone-300 hover:text-white hover:bg-stone-800 transition">SEBI Rules</button>
                 </div>
@@ -87,6 +88,7 @@
                     <select id="mobile-nav" onchange="switchTab(this.value)" class="bg-stone-800 text-orange-100 text-xs rounded p-2 border border-stone-700">
                         <option value="overview">Executive Overview</option>
                         <option value="position">Position & Obligation Analyzer</option>
+                        <option value="scrip-interest">Scrip Interest Checker</option>
                         <option value="scrips">Leverage Finder</option>
                         <option value="calculator">Cost & Decay Simulator</option>
                         <option value="risk">RMS & Liquidation</option>
@@ -590,6 +592,228 @@
                         </div>
                     </div>
 
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ================= NEW SECTION: SCRIP-WISE MTF INTEREST CHECKER ================= -->
+        <section id="sec-scrip-interest" class="tab-content hidden space-y-6">
+            
+            <!-- Header Card -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-orange-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl">📅</span>
+                        <h2 class="text-xl font-bold text-stone-900">Scrip-Wise MTF Interest Checker & Daily Ledger Simulator</h2>
+                    </div>
+                    <p class="text-xs sm:text-sm text-stone-600 mt-1">
+                        Calculate exact scrip-by-scrip carrying interest (0.04%/day) and view how daily interest debits and weekend batches post to your Zerodha statement.
+                    </p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="px-3 py-1 text-xs font-bold rounded-full bg-amber-100 text-amber-900 border border-amber-200 font-mono">
+                        0.04% / Calendar Day (14.6% p.a.)
+                    </span>
+                </div>
+            </div>
+
+            <!-- Statement Proof & Explanation Banner -->
+            <div class="bg-amber-50/70 p-5 rounded-xl border border-amber-200 text-xs text-stone-700 space-y-2 leading-relaxed">
+                <div class="flex items-center gap-2 text-sm font-bold text-amber-950">
+                    <span>💡</span> Real Statement Mechanics: Daily Posting & Weekend Catch-Up
+                </div>
+                <p>
+                    Zerodha debits interest on the active funded value <strong>every calendar day</strong>, including weekends (Saturdays and Sundays) and exchange holidays:
+                </p>
+                <ul class="list-disc list-inside space-y-1 text-stone-600">
+                    <li><strong>Friday to Sunday Accrual:</strong> Interest for Friday, Saturday, and Sunday accrues independently and posts to your ledger on <strong>Monday</strong> as individual line items labeled <code class="bg-white px-1 py-0.5 rounded border border-amber-200 font-mono text-amber-900">Interest for MTF funded value on YYYY-MM-DD</code>.</li>
+                    <li><strong>Formula:</strong> $\text{Daily Interest} = \text{Funded Loan Value } (F) \times 0.0004$. For example, a ₹3,125 funded balance yields an exact debit of <strong class="text-stone-900 font-mono">₹1.25 / day</strong>.</li>
+                    <li><strong>Allied Charges on Exit:</strong> When selling an MTF position, MTF unpledge charges (<strong class="font-mono text-stone-900">₹17.70</strong> inclusive of 18% GST) and Depository Participant (DP) charges (<strong class="font-mono text-stone-900">₹15.34</strong>) are debited in the normal equity ledger.</li>
+                </ul>
+            </div>
+
+            <!-- Preset Bar -->
+            <div class="bg-stone-900 text-white p-4 rounded-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-orange-400 font-mono">Statement Verification Presets</span>
+                    <p class="text-xs text-stone-300">Click a preset to match real statement figures and simulate date-wise debits:</p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="loadScripInterestPreset('SBIN_SCREENSHOT')" class="px-3 py-1.5 text-xs font-bold rounded bg-orange-600 hover:bg-orange-500 text-white transition">
+                        📄 Statement Match: SBIN (₹1.25/day)
+                    </button>
+                    <button onclick="loadScripInterestPreset('SBIN_10_SHARES')" class="px-3 py-1.5 text-xs font-bold rounded bg-stone-700 hover:bg-stone-600 text-white transition">
+                        🟢 SBIN 10 Qty @ ₹1010 (₹3.12/day)
+                    </button>
+                    <button onclick="loadScripInterestPreset('MEESHO_CASE')" class="px-3 py-1.5 text-xs font-bold rounded bg-stone-700 hover:bg-stone-600 text-white transition">
+                        🏷️ MEESHO 25k Qty (₹1,373.50/day)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Calculator Inputs & Metrics -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+                <!-- Input Controls -->
+                <div class="lg:col-span-5 bg-white p-6 rounded-xl border border-stone-200 shadow-sm space-y-4">
+                    <div class="border-b border-stone-100 pb-3 flex items-center justify-between">
+                        <h3 class="font-bold text-stone-900 text-sm flex items-center gap-2">
+                            <span>🎛️</span> Scrip Position Parameters
+                        </h3>
+                        <span class="text-xs text-stone-400 font-mono">Custom Input</span>
+                    </div>
+
+                    <div class="space-y-3 text-xs font-medium text-stone-700">
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block mb-1">Scrip Symbol</label>
+                                <input type="text" id="si-scrip" value="SBIN" oninput="runScripInterestCalc()" class="w-full p-2 border border-stone-300 rounded-lg font-mono text-sm uppercase font-bold focus:ring-2 focus:ring-orange-500 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Quantity</label>
+                                <input type="number" id="si-qty" value="4" step="1" oninput="syncSiMode('shares')" class="w-full p-2 border border-stone-300 rounded-lg font-mono text-sm focus:ring-2 focus:ring-orange-500 focus:outline-none">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block mb-1">Buy Price per Share (₹)</label>
+                                <input type="number" id="si-price" value="1010.00" step="0.5" oninput="syncSiMode('shares')" class="w-full p-2 border border-stone-300 rounded-lg font-mono text-sm focus:ring-2 focus:ring-orange-500 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Client Margin (%)</label>
+                                <input type="number" id="si-margin-pct" value="22.65" step="0.1" oninput="syncSiMode('shares')" class="w-full p-2 border border-stone-300 rounded-lg font-mono text-sm focus:ring-2 focus:ring-orange-500 focus:outline-none">
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-orange-50/50 rounded-lg border border-orange-200">
+                            <div class="flex items-center justify-between mb-1">
+                                <label class="font-bold text-orange-950">Or Directly Set Funded Loan (₹)</label>
+                                <span class="text-[10px] text-orange-800 font-mono">Broker Principal</span>
+                            </div>
+                            <input type="number" id="si-funded" value="3125.00" step="10" oninput="syncSiMode('funded')" class="w-full p-2 border border-orange-300 rounded-lg font-mono text-sm font-bold text-orange-900 bg-white focus:ring-2 focus:ring-orange-500 focus:outline-none">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block mb-1">Holding Start Date (T+1)</label>
+                                <input type="date" id="si-start-date" value="2026-09-12" oninput="runScripInterestCalc()" class="w-full p-2 border border-stone-300 rounded-lg font-mono text-xs focus:ring-2 focus:ring-orange-500 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Settlement / Sell Date</label>
+                                <input type="date" id="si-end-date" value="2026-09-16" oninput="runScripInterestCalc()" class="w-full p-2 border border-stone-300 rounded-lg font-mono text-xs focus:ring-2 focus:ring-orange-500 focus:outline-none">
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-stone-50 rounded-lg border border-stone-200 space-y-2">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" id="si-include-unpledge" checked onchange="runScripInterestCalc()" class="accent-orange-600 rounded">
+                                <span class="text-stone-800 text-xs">Include MTF Unpledge Charge (₹17.70)</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" id="si-include-dp" checked onchange="runScripInterestCalc()" class="accent-orange-600 rounded">
+                                <span class="text-stone-800 text-xs">Include DP Charges on Sale (₹15.34)</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Result Cards -->
+                <div class="lg:col-span-7 flex flex-col justify-between space-y-4">
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        <div class="bg-orange-50 p-3.5 rounded-xl border border-orange-200">
+                            <span class="text-xs text-stone-500 uppercase font-medium">Active Funded Loan</span>
+                            <p id="si-res-funded" class="text-xl font-bold text-orange-900 font-mono mt-1">₹3,125.00</p>
+                            <span class="text-[11px] text-stone-500" id="si-res-invested-sub">Gross Buy: ₹4,040.00</span>
+                        </div>
+
+                        <div class="bg-amber-50 p-3.5 rounded-xl border border-amber-200">
+                            <span class="text-xs text-stone-500 uppercase font-medium">Daily Interest Debit</span>
+                            <p id="si-res-daily" class="text-xl font-bold text-amber-900 font-mono mt-1">₹1.25 <span class="text-xs font-normal text-stone-500">/ day</span></p>
+                            <span class="text-[11px] text-stone-500">0.04% per calendar day</span>
+                        </div>
+
+                        <div class="bg-stone-50 p-3.5 rounded-xl border border-stone-200">
+                            <span class="text-xs text-stone-500 uppercase font-medium">Holding Duration</span>
+                            <p id="si-res-days" class="text-xl font-bold text-stone-900 font-mono mt-1">5 Days</p>
+                            <span class="text-[11px] text-stone-500" id="si-res-weekends-sub">Includes 2 weekend days</span>
+                        </div>
+
+                        <div class="bg-rose-50 p-3.5 rounded-xl border border-rose-200">
+                            <span class="text-xs text-stone-500 uppercase font-medium">Total Interest Accrued</span>
+                            <p id="si-res-total-interest" class="text-xl font-bold text-rose-700 font-mono mt-1">₹6.25</p>
+                            <span class="text-[11px] text-rose-600">5 days × ₹1.25</span>
+                        </div>
+
+                        <div class="bg-purple-50 p-3.5 rounded-xl border border-purple-200">
+                            <span class="text-xs text-stone-500 uppercase font-medium">Allied Depository Fees</span>
+                            <p id="si-res-allied" class="text-xl font-bold text-purple-700 font-mono mt-1">₹33.04</p>
+                            <span class="text-[11px] text-purple-600">Unpledge ₹17.70 + DP ₹15.34</span>
+                        </div>
+
+                        <div class="bg-stone-900 text-white p-3.5 rounded-xl">
+                            <span class="text-xs text-stone-400 uppercase font-medium">Total Holding Friction</span>
+                            <p id="si-res-net-carrying" class="text-xl font-bold text-orange-400 font-mono mt-1">₹39.29</p>
+                            <span class="text-[11px] text-stone-400">Interest + Pledging + DP</span>
+                        </div>
+                    </div>
+
+                    <!-- Breakdown Calculation Box -->
+                    <div class="p-4 bg-orange-50/50 rounded-xl border border-orange-200 text-xs font-mono space-y-1.5">
+                        <div class="flex justify-between text-stone-700">
+                            <span>Step 1: Daily Accrual Formula:</span>
+                            <span class="font-bold text-stone-900" id="si-calc-step1">₹3,125.00 × 0.0004 = ₹1.25 / day</span>
+                        </div>
+                        <div class="flex justify-between text-stone-700">
+                            <span>Step 2: Calendar Days Calculation:</span>
+                            <span class="font-bold text-stone-900" id="si-calc-step2">12/09/2026 to 16/09/2026 = 5 Calendar Days</span>
+                        </div>
+                        <div class="flex justify-between text-amber-900 font-bold">
+                            <span>Step 3: Cumulative Carrying Interest:</span>
+                            <span id="si-calc-step3">5 × ₹1.25 = ₹6.25 Total Accrued</span>
+                        </div>
+                    </div>
+
+                    <!-- Statement Match Note -->
+                    <div class="p-3 bg-white rounded-xl border border-stone-200 text-xs text-stone-600 flex items-center justify-between">
+                        <span>Console Path: <strong>Console &gt; Funds &gt; Interest Statement &gt; MTF</strong></span>
+                        <span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 font-bold rounded text-[11px]">Exact Statement Replication</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- SIMULATED CONSOLE EQUITY LEDGER STATEMENT TABLE -->
+            <div class="bg-white p-6 rounded-xl border border-orange-100 shadow-sm space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-200 pb-3">
+                    <div>
+                        <h3 class="text-base font-bold text-stone-900 flex items-center gap-2">
+                            <span>📑</span> Simulated Zerodha Equity Ledger Statement (Statement Match View)
+                        </h3>
+                        <p class="text-xs text-stone-500 mt-0.5">
+                            Replicating the exact row-by-row daily interest debits, weekend batch postings, and depository charges from your statement.
+                        </p>
+                    </div>
+                    <span class="text-xs font-mono font-bold text-stone-500">Segment: NSE-EQ</span>
+                </div>
+
+                <div class="overflow-x-auto custom-scrollbar">
+                    <table class="w-full text-left text-xs text-stone-700">
+                        <thead class="bg-stone-900 text-white uppercase font-mono">
+                            <tr>
+                                <th class="p-3">Posting Date</th>
+                                <th class="p-3">Segment</th>
+                                <th class="p-3">Particulars / Transaction Description</th>
+                                <th class="p-3 text-right">Debit (₹)</th>
+                                <th class="p-3 text-right">Credit (₹)</th>
+                                <th class="p-3 text-right">Running Net (₹)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="si-ledger-body" class="divide-y divide-stone-200 font-mono">
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
@@ -1568,6 +1792,9 @@
             if (tabId === 'position') {
                 syncKitePositionCalculator('init');
             }
+            if (tabId === 'scrip-interest') {
+                runScripInterestCalc();
+            }
             if (tabId === 'meesho') {
                 initMeeshoChart();
             }
@@ -1576,6 +1803,187 @@
         // Backward compatibility alias for reconcileCN
         function reconcileCN() {
             calculateUniversalReconciliation();
+        }
+
+        // ================= SECTION: SCRIP-WISE MTF INTEREST CHECKER LOGIC =================
+        function syncSiMode(source) {
+            const qty = parseFloat(document.getElementById('si-qty').value) || 0;
+            const price = parseFloat(document.getElementById('si-price').value) || 0;
+            const marginPct = parseFloat(document.getElementById('si-margin-pct').value) || 0;
+            
+            if (source === 'shares') {
+                const grossVal = qty * price;
+                const marginAmt = grossVal * (marginPct / 100);
+                const fundedVal = Math.max(0, grossVal - marginAmt);
+                document.getElementById('si-funded').value = fundedVal.toFixed(2);
+            }
+            runScripInterestCalc();
+        }
+
+        function loadScripInterestPreset(presetKey) {
+            if (presetKey === 'SBIN_SCREENSHOT') {
+                document.getElementById('si-scrip').value = "SBIN";
+                document.getElementById('si-qty').value = "4";
+                document.getElementById('si-price').value = "1010.00";
+                document.getElementById('si-margin-pct').value = "22.65";
+                document.getElementById('si-funded').value = "3125.00";
+                document.getElementById('si-start-date').value = "2026-09-12";
+                document.getElementById('si-end-date').value = "2026-09-16";
+                document.getElementById('si-include-unpledge').checked = true;
+                document.getElementById('si-include-dp').checked = true;
+            } else if (presetKey === 'SBIN_10_SHARES') {
+                document.getElementById('si-scrip').value = "SBIN";
+                document.getElementById('si-qty').value = "10";
+                document.getElementById('si-price').value = "1010.00";
+                document.getElementById('si-margin-pct').value = "22.80";
+                document.getElementById('si-funded').value = "7797.20";
+                document.getElementById('si-start-date').value = "2026-09-09";
+                document.getElementById('si-end-date').value = "2026-09-16";
+                document.getElementById('si-include-unpledge').checked = true;
+                document.getElementById('si-include-dp').checked = true;
+            } else if (presetKey === 'MEESHO_CASE') {
+                document.getElementById('si-scrip').value = "MEESHO";
+                document.getElementById('si-qty').value = "25000";
+                document.getElementById('si-price').value = "207.39";
+                document.getElementById('si-margin-pct').value = "33.77";
+                document.getElementById('si-funded').value = "3433743.56";
+                document.getElementById('si-start-date').value = "2026-08-28";
+                document.getElementById('si-end-date').value = "2026-09-02";
+                document.getElementById('si-include-unpledge').checked = true;
+                document.getElementById('si-include-dp').checked = true;
+            }
+            runScripInterestCalc();
+        }
+
+        function runScripInterestCalc() {
+            const scrip = (document.getElementById('si-scrip').value || "SBIN").toUpperCase();
+            const qty = parseFloat(document.getElementById('si-qty').value) || 0;
+            const price = parseFloat(document.getElementById('si-price').value) || 0;
+            const funded = parseFloat(document.getElementById('si-funded').value) || 0;
+            const startDateStr = document.getElementById('si-start-date').value;
+            const endDateStr = document.getElementById('si-end-date').value;
+            const includeUnpledge = document.getElementById('si-include-unpledge').checked;
+            const includeDp = document.getElementById('si-include-dp').checked;
+
+            const grossBuyVal = qty * price;
+            const dailyInterest = funded * 0.0004;
+
+            // Date math
+            let dStart = new Date(startDateStr);
+            let dEnd = new Date(endDateStr);
+            if (isNaN(dStart.getTime())) dStart = new Date("2026-09-12");
+            if (isNaN(dEnd.getTime())) dEnd = new Date("2026-09-16");
+            if (dEnd < dStart) dEnd = new Date(dStart);
+
+            const msPerDay = 1000 * 60 * 60 * 24;
+            const dayCount = Math.round((dEnd - dStart) / msPerDay) + 1;
+
+            const totalInterest = dailyInterest * dayCount;
+            let alliedFees = 0;
+            if (includeUnpledge) alliedFees += 17.70;
+            if (includeDp) alliedFees += 15.34;
+            const netCarrying = totalInterest + alliedFees;
+
+            // Update top cards
+            document.getElementById('si-res-funded').innerText = `₹${funded.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('si-res-invested-sub').innerText = grossBuyVal > 0 ? `Gross Buy: ₹${grossBuyVal.toLocaleString('en-IN', {minimumFractionDigits: 2})}` : `Manual Principal`;
+            document.getElementById('si-res-daily').innerHTML = `₹${dailyInterest.toFixed(2)} <span class="text-xs font-normal text-stone-500">/ day</span>`;
+            document.getElementById('si-res-days').innerText = `${dayCount} Days`;
+            document.getElementById('si-res-total-interest').innerText = `₹${totalInterest.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('si-res-allied').innerText = `₹${alliedFees.toFixed(2)}`;
+            document.getElementById('si-res-net-carrying').innerText = `₹${netCarrying.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+
+            // Calculation steps box
+            document.getElementById('si-calc-step1').innerText = `₹${funded.toLocaleString('en-IN', {minimumFractionDigits: 2})} × 0.0004 = ₹${dailyInterest.toFixed(2)} / day`;
+            document.getElementById('si-calc-step2').innerText = `${startDateStr} to ${endDateStr} = ${dayCount} Calendar Days`;
+            document.getElementById('si-calc-step3').innerText = `${dayCount} days × ₹${dailyInterest.toFixed(2)} = ₹${totalInterest.toFixed(2)} Total Accrued`;
+
+            // Build Simulated Statement Table
+            const tbody = document.getElementById('si-ledger-body');
+            tbody.innerHTML = '';
+            let runningBalance = 5570.79; // matches statement baseline
+
+            // Collect all daily dates
+            const dateList = [];
+            let curr = new Date(dStart);
+            while (curr <= dEnd) {
+                dateList.push(new Date(curr));
+                curr.setDate(curr.getDate() + 1);
+            }
+
+            // Reverse for top-down display (most recent on top like Zerodha Console)
+            dateList.sort((a, b) => b - a);
+
+            // If including AMC/other entries for realism
+            dateList.forEach(dt => {
+                const yyyy = dt.getFullYear();
+                const mm = String(dt.getMonth() + 1).padStart(2, '0');
+                const dd = String(dt.getDate()).padStart(2, '0');
+                const dtStr = `${yyyy}-${mm}-${dd}`;
+                const dayOfWeek = dt.getDay(); // 0 = Sun, 6 = Sat
+
+                // In Zerodha statements, weekend debits (Sat & Sun) are posted on Monday with particulars referencing the exact date!
+                let postingDate = dtStr;
+                if (dayOfWeek === 6) { // Saturday
+                    const mon = new Date(dt);
+                    mon.setDate(mon.getDate() + 2);
+                    postingDate = `${mon.getFullYear()}-${String(mon.getMonth()+1).padStart(2,'0')}-${String(mon.getDate()).padStart(2,'0')}`;
+                } else if (dayOfWeek === 0) { // Sunday
+                    const mon = new Date(dt);
+                    mon.setDate(mon.getDate() + 1);
+                    postingDate = `${mon.getFullYear()}-${String(mon.getMonth()+1).padStart(2,'0')}-${String(mon.getDate()).padStart(2,'0')}`;
+                }
+
+                // If sale date matches dtStr and user selected allied fees
+                if (dtStr === endDateStr) {
+                    if (includeUnpledge) {
+                        const trUnpledge = document.createElement('tr');
+                        trUnpledge.className = "hover:bg-orange-50/40";
+                        trUnpledge.innerHTML = `
+                            <td class="p-3 font-bold text-stone-900">${dtStr}</td>
+                            <td class="p-3 text-stone-500">NSE-EQ</td>
+                            <td class="p-3 font-semibold text-stone-800">MTF unpledge charges for ${scrip}</td>
+                            <td class="p-3 text-right text-rose-600 font-bold">17.70</td>
+                            <td class="p-3 text-right text-stone-400">0</td>
+                            <td class="p-3 text-right text-stone-600">${runningBalance.toFixed(2)}</td>
+                        `;
+                        tbody.appendChild(trUnpledge);
+                        runningBalance += 17.70;
+                    }
+
+                    if (includeDp) {
+                        const trDp = document.createElement('tr');
+                        trDp.className = "hover:bg-orange-50/40";
+                        trDp.innerHTML = `
+                            <td class="p-3 font-bold text-stone-900">${dtStr}</td>
+                            <td class="p-3 text-stone-500">NSE-EQ</td>
+                            <td class="p-3 font-semibold text-stone-800">DP Charges for Sale of ${scrip} on ${dd}/${mm}/${yyyy}</td>
+                            <td class="p-3 text-right text-rose-600 font-bold">15.34</td>
+                            <td class="p-3 text-right text-stone-400">0</td>
+                            <td class="p-3 text-right text-stone-600">${runningBalance.toFixed(2)}</td>
+                        `;
+                        tbody.appendChild(trDp);
+                        runningBalance += 15.34;
+                    }
+                }
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-amber-50/40";
+                const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
+                tr.innerHTML = `
+                    <td class="p-3 font-bold text-stone-900">${postingDate}</td>
+                    <td class="p-3 text-stone-500">NSE-EQ</td>
+                    <td class="p-3">
+                        <span class="font-semibold text-amber-950">Interest for MTF funded value on ${dtStr}</span>
+                        ${isWeekend ? '<span class="ml-2 px-1.5 py-0.5 text-[10px] bg-amber-200 text-amber-900 rounded font-bold">Weekend Accrual</span>' : ''}
+                    </td>
+                    <td class="p-3 text-right text-rose-600 font-bold">${dailyInterest.toFixed(2)}</td>
+                    <td class="p-3 text-right text-stone-400">0</td>
+                    <td class="p-3 text-right text-stone-600">${runningBalance.toFixed(2)}</td>
+                `;
+                tbody.appendChild(tr);
+                runningBalance += dailyInterest;
+            });
         }
 
         // ================= SECTION: POSITION & OBLIGATION ANALYZER LOGIC =================
@@ -2260,6 +2668,7 @@
             calcRMS();
             calculateUniversalReconciliation();
             syncKitePositionCalculator('init');
+            runScripInterestCalc();
         });
     </script>
 </body>

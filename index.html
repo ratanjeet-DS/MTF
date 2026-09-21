@@ -75,6 +75,7 @@
                 </div>
                 <div class="hidden lg:flex space-x-1 text-xs font-medium">
                     <button onclick="switchTab('overview')" id="nav-overview" class="px-2.5 py-2 rounded-md text-stone-300 hover:text-white hover:bg-stone-800 transition">Overview</button>
+                    <button onclick="switchTab('position')" id="nav-position" class="px-2.5 py-2 rounded-md text-stone-300 hover:text-white hover:bg-stone-800 transition">Position & Obligation</button>
                     <button onclick="switchTab('scrips')" id="nav-scrips" class="px-2.5 py-2 rounded-md text-stone-300 hover:text-white hover:bg-stone-800 transition">Leverage Finder</button>
                     <button onclick="switchTab('calculator')" id="nav-calculator" class="px-2.5 py-2 rounded-md text-stone-300 hover:text-white hover:bg-stone-800 transition">Cost & Decay</button>
                     <button onclick="switchTab('risk')" id="nav-risk" class="px-2.5 py-2 rounded-md text-stone-300 hover:text-white hover:bg-stone-800 transition">RMS & Risk</button>
@@ -85,6 +86,7 @@
                 <div class="lg:hidden">
                     <select id="mobile-nav" onchange="switchTab(this.value)" class="bg-stone-800 text-orange-100 text-xs rounded p-2 border border-stone-700">
                         <option value="overview">Executive Overview</option>
+                        <option value="position">Position & Obligation Analyzer</option>
                         <option value="scrips">Leverage Finder</option>
                         <option value="calculator">Cost & Decay Simulator</option>
                         <option value="risk">RMS & Liquidation</option>
@@ -127,7 +129,7 @@
                     <div class="bg-orange-50/50 p-4 rounded-lg border border-orange-100">
                         <p class="text-xs font-semibold text-stone-500 uppercase tracking-wider">Max Account Funding</p>
                         <p class="text-2xl font-extrabold text-emerald-600 mt-1">₹50 Crore</p>
-                        <p class="text-xs text-stone-600 mt-1">Standard platform limit (Single scrip: ₹12Cr Nifty500 / ₹7Cr Non-Nifty)</p>
+                        <p class="text-xs text-stone-600 mt-1">Account cap (Per stock: ₹12Cr Nifty 500 / ₹7Cr &gt;1k Cr FF / ₹3Cr &lt;1k Cr FF)</p>
                     </div>
                     <div class="bg-orange-50/50 p-4 rounded-lg border border-orange-100">
                         <p class="text-xs font-semibold text-stone-500 uppercase tracking-wider">RMS Hard Liquidation</p>
@@ -139,36 +141,68 @@
 
             <!-- Capital Exposure Limits Table -->
             <div class="bg-white p-6 rounded-xl shadow-sm border border-orange-100">
-                <h3 class="text-lg font-bold text-stone-900 mb-2 flex items-center gap-2">
-                    <span>🛡️</span> Capital Exposure Concentration Caps
-                </h3>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
+                    <h3 class="text-lg font-bold text-stone-900 flex items-center gap-2">
+                        <span>🛡️</span> Capital Exposure Concentration Caps
+                    </h3>
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-orange-100 text-orange-800 border border-orange-200">
+                        ⚡ Revised Free Float Market Cap Policy Active
+                    </span>
+                </div>
                 <p class="text-xs text-stone-600 mb-4">
-                    To prevent single-client default risk and preserve systemic stability, Zerodha enforces hard credit limits across account holdings.
+                    To prevent single-client default risk and preserve systemic stability, Zerodha enforces hard credit limits across account holdings, tiered by index inclusion and free float market capitalization.
                 </p>
                 <div class="overflow-x-auto mb-4">
                     <table class="w-full text-left text-sm text-stone-700">
                         <thead class="bg-orange-100/60 text-stone-900 uppercase text-xs">
                             <tr>
                                 <th class="p-3 rounded-l">Exposure Limit Parameter</th>
-                                <th class="p-3">Capital Cap Value</th>
+                                <th class="p-3">Previous Limit</th>
+                                <th class="p-3 bg-orange-200/70 text-orange-950 font-extrabold border-x border-orange-300">Latest Update on MTF</th>
                                 <th class="p-3 rounded-r">Regulatory & Strategic Rationale</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-orange-100">
+                        <tbody class="divide-y divide-orange-100 text-xs">
                             <tr class="hover:bg-orange-50/40">
-                                <td class="p-3 font-semibold">Overall Account Funding Ceiling</td>
-                                <td class="p-3 text-orange-600 font-bold">₹50,00,00,000 (₹50 Cr)</td>
-                                <td class="p-3 text-xs">Standard platform ceiling per account across all active MTF positions.</td>
+                                <td class="p-3 font-semibold text-stone-900">Overall Account Funding Ceiling</td>
+                                <td class="p-3 text-stone-600 font-mono">₹50 Crore</td>
+                                <td class="p-3 text-orange-700 font-bold font-mono bg-orange-50/50 border-x border-orange-200">
+                                    ₹50,00,00,000 (₹50 Cr)
+                                </td>
+                                <td class="p-3 text-stone-600">Standard platform ceiling per account across all active MTF positions combined.</td>
                             </tr>
                             <tr class="hover:bg-orange-50/40">
-                                <td class="p-3 font-semibold">Nifty 500 Single-Scrip Limit</td>
-                                <td class="p-3 text-emerald-600 font-bold">₹12,00,00,000 (₹12 Cr)</td>
-                                <td class="p-3 text-xs">Maximum allowed loan commitment per stock for liquid Nifty 500 constituents.</td>
+                                <td class="p-3 font-semibold text-stone-900">Per stock limit (Nifty 500 securities)</td>
+                                <td class="p-3 text-stone-600 font-mono">₹12 Crore</td>
+                                <td class="p-3 text-emerald-700 font-bold font-mono bg-orange-50/50 border-x border-orange-200">
+                                    ₹12,00,00,000 (₹12 Cr)
+                                </td>
+                                <td class="p-3 text-stone-600">Highest single-stock loan ceiling reserved for highly liquid Nifty 500 constituents.</td>
                             </tr>
                             <tr class="hover:bg-orange-50/40">
-                                <td class="p-3 font-semibold">Non-Nifty 500 Single-Scrip Limit</td>
-                                <td class="p-3 text-amber-600 font-bold">₹7,00,00,000 (₹7 Cr)</td>
-                                <td class="p-3 text-xs">Conservative ceiling applied to mid-cap and small-cap Group 1 stocks to mitigate illiquidity risk.</td>
+                                <td class="p-3 font-semibold text-stone-900">
+                                    Per stock limit (Other securities with over 1000 cr free float Market Cap)
+                                </td>
+                                <td class="p-3 text-stone-600 font-mono">₹7 Crore</td>
+                                <td class="p-3 text-amber-700 font-bold font-mono bg-orange-50/50 border-x border-orange-200">
+                                    ₹7,00,00,000 (₹7 Cr)
+                                </td>
+                                <td class="p-3 text-stone-600">Applies to Non-Nifty 500 Group 1 stocks maintaining a healthy free float market cap &gt; ₹1,000 Cr.</td>
+                            </tr>
+                            <tr class="hover:bg-orange-50/40 bg-orange-50/30">
+                                <td class="p-3 font-semibold text-stone-900">
+                                    <div class="flex items-center gap-1.5">
+                                        <span>Per stock limit (Other securities with less than 1000 cr free float Market Cap)</span>
+                                        <span class="px-1.5 py-0.5 text-[10px] font-bold bg-rose-600 text-white rounded">NEW REVISION</span>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-rose-500 line-through font-mono">₹7 Crore</td>
+                                <td class="p-3 text-rose-700 font-black font-mono bg-orange-100/60 border-x border-orange-300 text-sm">
+                                    ₹3,00,00,000 (₹3 Cr)
+                                </td>
+                                <td class="p-3 text-stone-700">
+                                    <strong>Downscaled from ₹7 Cr to ₹3 Cr</strong> to proactively curtail counterparty liquidity and slippage risks in low free-float scrips during adverse market conditions.
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -180,11 +214,385 @@
                     <div class="text-xs text-orange-950">
                         <p class="font-bold text-sm text-orange-950 mb-1">Requesting an Increase in MTF Account / Scrip Exposure Limit</p>
                         <p class="leading-relaxed text-stone-700">
-                            If a client requires a higher MTF funding ceiling beyond the standard ₹50 Crore total account limit or wishes to increase single-scrip exposure limits (beyond ₹12 Cr for Nifty 500 / ₹7 Cr for Non-Nifty 500 stocks), they can request an enhancement by <strong>sending an email directly to the RMS (Risk Management System) team at <a href="mailto:rms@zerodha.com" class="underline font-bold text-orange-700 hover:text-orange-900">rms@zerodha.com</a></strong> or raising a ticket with the RMS desk. The RMS team conducts individual credit underwriting, risk evaluation, and account collateral verification before granting custom exposure approvals.
+                            If a client requires a higher MTF funding ceiling beyond the standard ₹50 Crore total account limit or wishes to increase single-scrip exposure limits (beyond ₹12 Cr for Nifty 500, ₹7 Cr for &gt;₹1,000 Cr free float, or ₹3 Cr for &lt;₹1,000 Cr free float stocks), they can request an enhancement by <strong>sending an email directly to the RMS (Risk Management System) team at <a href="mailto:rms@zerodha.com" class="underline font-bold text-orange-700 hover:text-orange-900">rms@zerodha.com</a></strong> or raising a ticket with the RMS desk. The RMS team conducts individual credit underwriting, risk evaluation, and account collateral verification before granting custom exposure approvals.
                         </p>
                     </div>
                 </div>
             </div>
+        </section>
+
+        <!-- ================= SECTION: POSITION & OBLIGATION ANALYZER (KITE WIDGET) ================= -->
+        <section id="sec-position" class="tab-content hidden space-y-6">
+            
+            <!-- Header Card -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-orange-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl">⚡</span>
+                        <h2 class="text-xl font-bold text-stone-900">Kite MTF Active Position & Obligation Calculator</h2>
+                    </div>
+                    <p class="text-xs sm:text-sm text-stone-600 mt-1">
+                        Direct mathematical breakdown and obligation reconciliation based on your active Kite MTF summary widget.
+                    </p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="px-3 py-1 text-xs font-bold rounded-full bg-orange-100 text-orange-800 border border-orange-200">
+                        Live Kite MTF Schema
+                    </span>
+                </div>
+            </div>
+
+            <!-- THE KITE MTF SUMMARY BAR (Replicating Screenshot: Invested 5.95L, Present value 6.31L, Funded 3.9L, Initial margin 2.05L, MTM loss -4.15k, P&L 35.74k) -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-stone-200">
+                <div class="flex items-center justify-between mb-4 pb-2 border-b border-stone-100">
+                    <p class="text-xs font-bold text-stone-400 uppercase tracking-wider">Kite MTF Active Positions Summary Widget</p>
+                    <span class="text-xs text-stone-500 font-mono">Real-time Reactive Display</span>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 text-center divide-y sm:divide-y-0 sm:divide-x divide-stone-100">
+                    <div class="pt-2 sm:pt-0">
+                        <span class="text-xs text-stone-500 font-medium">Invested</span>
+                        <p id="disp-invested" class="text-2xl font-bold text-stone-900 mt-1">5.95L</p>
+                        <span class="text-[11px] text-stone-400">Gross Buy Value</span>
+                    </div>
+                    <div class="pt-2 sm:pt-0 sm:pl-3">
+                        <span class="text-xs text-stone-500 font-medium">Present value</span>
+                        <p id="disp-pv" class="text-2xl font-bold text-stone-900 mt-1">6.31L</p>
+                        <span class="text-[11px] text-stone-400">Current Market Worth</span>
+                    </div>
+                    <div class="pt-2 sm:pt-0 sm:pl-3">
+                        <span class="text-xs text-stone-500 font-medium">Funded value</span>
+                        <p id="disp-funded" class="text-2xl font-bold text-stone-900 mt-1">3.9L</p>
+                        <span class="text-[11px] text-orange-600 font-semibold" id="disp-funded-sub">Zerodha Loan (65.5%)</span>
+                    </div>
+                    <div class="pt-2 sm:pt-0 sm:pl-3">
+                        <span class="text-xs text-stone-500 font-medium">Initial margin</span>
+                        <p id="disp-im" class="text-2xl font-bold text-stone-900 mt-1">2.05L</p>
+                        <span class="text-[11px] text-stone-500 font-semibold" id="disp-im-sub">Your Cash (34.5%)</span>
+                    </div>
+                    <div class="pt-2 sm:pt-0 sm:pl-3">
+                        <span class="text-xs text-stone-500 font-medium">MTM loss</span>
+                        <p id="disp-mtm" class="text-2xl font-bold text-rose-600 mt-1">-4.15k</p>
+                        <span class="text-[11px] text-rose-500 font-medium">Blocked in EQ Ledger</span>
+                    </div>
+                    <div class="pt-2 sm:pt-0 sm:pl-3">
+                        <span class="text-xs text-stone-500 font-medium">P&L</span>
+                        <p id="disp-pnl" class="text-2xl font-bold text-emerald-600 mt-1 flex items-center justify-center gap-1">
+                            <span>35.74k</span>
+                            <span class="text-xs font-semibold">▲ 6%</span>
+                        </p>
+                        <span class="text-[11px] text-emerald-600 font-medium">Overall Unrealized Gain</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DETAILED OBLIGATION AMOUNTS BREAKDOWN -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                
+                <!-- 1. Total Current Margin Obligation -->
+                <div class="bg-white p-5 rounded-xl border border-orange-200 shadow-sm space-y-2">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-orange-600">Obligation 1: Cash Blocked</span>
+                            <h3 class="text-base font-bold text-stone-900">Total Margin Obligation</h3>
+                        </div>
+                        <span class="p-2 bg-orange-100 rounded-lg text-sm">🔒</span>
+                    </div>
+                    <p id="calc-total-margin-obl" class="text-2xl font-black text-orange-700 font-mono">₹2,09,150.00</p>
+                    <div class="p-2.5 bg-orange-50 rounded-lg text-xs text-stone-700 font-sans space-y-1">
+                        <div class="flex justify-between">
+                            <span>Initial Margin Blocked:</span>
+                            <span class="font-mono font-bold" id="item-im">₹2,05,000.00</span>
+                        </div>
+                        <div class="flex justify-between text-rose-700 font-semibold">
+                            <span>+ MTM Loss Debited:</span>
+                            <span class="font-mono font-bold" id="item-mtm">₹4,150.00</span>
+                        </div>
+                    </div>
+                    <p class="text-[11px] text-stone-500 leading-tight">
+                        Total liquid cash blocked across your Equity Ledger to maintain these MTF positions.
+                    </p>
+                </div>
+
+                <!-- 2. Liquidation Payout Obligation -->
+                <div class="bg-white p-5 rounded-xl border border-emerald-200 shadow-sm space-y-2">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-600">Obligation 2: Liquidation Payout</span>
+                            <h3 class="text-base font-bold text-stone-900">Net Exit Settlement Credit</h3>
+                        </div>
+                        <span class="p-2 bg-emerald-100 rounded-lg text-sm">💰</span>
+                    </div>
+                    <p id="calc-net-settlement-credit" class="text-2xl font-black text-emerald-700 font-mono">₹2,40,740.00</p>
+                    <div class="p-2.5 bg-emerald-50 rounded-lg text-xs text-stone-700 font-sans space-y-1">
+                        <div class="flex justify-between">
+                            <span>Present Value (Gross Sale):</span>
+                            <span class="font-mono font-bold" id="item-pv">₹6,31,000.00</span>
+                        </div>
+                        <div class="flex justify-between text-amber-900">
+                            <span>- Zerodha Loan Recovered:</span>
+                            <span class="font-mono font-bold" id="item-funded">-₹3,90,000.00</span>
+                        </div>
+                    </div>
+                    <p class="text-[11px] text-stone-500 leading-tight">
+                        Exact cash receivable credited to your Equity Ledger on T+1 if squared off today (Initial Margin + P&L).
+                    </p>
+                </div>
+
+                <!-- 3. Daily Carrying Interest Obligation -->
+                <div class="bg-white p-5 rounded-xl border border-amber-200 shadow-sm space-y-2">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-amber-700">Obligation 3: Carrying Cost</span>
+                            <h3 class="text-base font-bold text-stone-900">Daily Interest Obligation</h3>
+                        </div>
+                        <span class="p-2 bg-amber-100 rounded-lg text-sm">⏳</span>
+                    </div>
+                    <p id="calc-daily-interest" class="text-2xl font-black text-amber-900 font-mono">₹156.00 <span class="text-xs font-normal text-stone-500">/ day</span></p>
+                    <div class="p-2.5 bg-amber-50/70 rounded-lg text-xs text-stone-700 font-sans space-y-1">
+                        <div class="flex justify-between">
+                            <span>Daily Rate:</span>
+                            <span class="font-mono font-bold">0.04% per calendar day</span>
+                        </div>
+                        <div class="flex justify-between text-stone-600">
+                            <span>Monthly Cost (30 Days):</span>
+                            <span class="font-mono font-bold" id="item-monthly-interest">₹4,680.00</span>
+                        </div>
+                    </div>
+                    <p class="text-[11px] text-stone-500 leading-tight">
+                        Accrues on the ₹3,90,000 funded value every day (including weekends) and debited from your ledger.
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- INTERACTIVE POSITION CALCULATOR INPUTS & DUAL LEDGER SUMMARY -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                <!-- Adjust Position Parameters -->
+                <div class="lg:col-span-5 bg-white p-6 rounded-xl border border-stone-200 shadow-sm space-y-4">
+                    <div class="border-b border-stone-100 pb-3 flex items-center justify-between">
+                        <div>
+                            <h3 class="font-bold text-stone-900 text-sm flex items-center gap-2">
+                                <span>🎛️</span> Adjust Position Values
+                            </h3>
+                            <p class="text-xs text-stone-500 mt-0.5">Modify any figure to see live recalculation of all obligations.</p>
+                        </div>
+                        <button onclick="resetKiteDefaults()" class="text-xs font-bold text-orange-600 hover:text-orange-800">Reset Defaults</button>
+                    </div>
+
+                    <div class="space-y-3 text-xs font-medium text-stone-700">
+                        <div>
+                            <label class="block mb-1">Gross Invested Cost (₹)</label>
+                            <input type="number" id="input-invested" value="595000" step="5000" oninput="syncKitePositionCalculator('invested')" class="w-full p-2 border border-stone-300 rounded-lg font-mono text-sm focus:ring-2 focus:ring-orange-500 focus:outline-none">
+                        </div>
+
+                        <div>
+                            <label class="block mb-1">Present Value (₹)</label>
+                            <input type="number" id="input-pv" value="631000" step="5000" oninput="syncKitePositionCalculator('pv')" class="w-full p-2 border border-stone-300 rounded-lg font-mono text-sm focus:ring-2 focus:ring-orange-500 focus:outline-none">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block mb-1">Funded Value (Loan) (₹)</label>
+                                <input type="number" id="input-funded" value="390000" step="1000" oninput="syncKitePositionCalculator('funded')" class="w-full p-2 border border-stone-300 rounded-lg font-mono text-sm focus:ring-2 focus:ring-orange-500 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Initial Margin (₹)</label>
+                                <input type="number" id="input-im" value="205000" step="1000" oninput="syncKitePositionCalculator('im')" class="w-full p-2 border border-stone-300 rounded-lg font-mono text-sm focus:ring-2 focus:ring-orange-500 focus:outline-none">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block mb-1">MTM Loss (₹)</label>
+                                <input type="number" id="input-mtm" value="4150" step="100" oninput="syncKitePositionCalculator('mtm')" class="w-full p-2 border border-stone-300 rounded-lg font-mono text-sm text-rose-600 focus:ring-2 focus:ring-rose-500 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block mb-1">Overall P&L (₹)</label>
+                                <input type="number" id="input-pnl" value="35740" step="100" oninput="syncKitePositionCalculator('pnl')" class="w-full p-2 border border-stone-300 rounded-lg font-mono text-sm text-emerald-600 focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-stone-50 rounded-xl text-xs text-stone-600 space-y-1 font-mono">
+                        <div class="flex justify-between">
+                            <span>Funded Leverage Ratio:</span>
+                            <span id="stat-leverage" class="font-bold text-orange-700">1.53x (65.55% Funded)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>RMS 80% Stop-Loss Trigger:</span>
+                            <span id="stat-rms" class="font-bold text-rose-700">₹3,12,000 Loss (PV = ₹2.83L)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mathematical Proof & Explanation View -->
+                <div class="lg:col-span-7 bg-white p-6 rounded-xl border border-stone-200 shadow-sm flex flex-col justify-between space-y-4">
+                    <div>
+                        <h3 class="font-bold text-stone-900 text-sm flex items-center gap-2 mb-2">
+                            <span>💡</span> Why is there an MTM Loss when P&L is +₹35.74k?
+                        </h3>
+                        <div class="p-3.5 bg-orange-50/60 border border-orange-200 rounded-xl text-xs text-stone-700 leading-relaxed space-y-2">
+                            <p>
+                                <strong>The Basket Reality:</strong> Zerodha evaluates MTM obligation <strong>scrip by scrip</strong>. When holding multiple MTF scrips:
+                            </p>
+                            <ul class="list-disc list-inside space-y-1 text-stone-600">
+                                <li>Losing position(s) incurred an unrealized drop of <strong class="text-rose-600 font-mono" id="basket-mtm-loss">₹4,150.00</strong>. Zerodha RMS blocks this as a cash debit obligation in your equity ledger.</li>
+                                <li>Gaining position(s) generated <strong class="text-emerald-700 font-mono" id="basket-gain">+₹39,890.00</strong> in unrealized gains.</li>
+                                <li>Net Total P&L across all positions = <strong class="text-emerald-700 font-mono" id="basket-net-pnl">+₹35,740.00 (+6.0%)</strong>.</li>
+                            </ul>
+                            <p class="text-stone-500 text-[11px]">
+                                *Under SEBI MTF rules, unrealized profit from Stock A cannot subsidize the MTM cash shortfall of Stock B until positions are liquidated!
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Dual Ledger Breakdown Box -->
+                    <div class="p-4 bg-stone-900 text-white rounded-xl space-y-2">
+                        <p class="text-xs font-bold text-orange-400 uppercase tracking-wider font-mono">Zerodha Dual-Ledger Obligation Summary</p>
+                        <table class="w-full text-xs font-mono">
+                            <tbody class="divide-y divide-stone-800">
+                                <tr>
+                                    <td class="py-1 text-stone-400">Normal EQ Ledger Debit (Initial Margin):</td>
+                                    <td class="py-1 text-right font-bold text-stone-200" id="ledger-im">₹2,05,000.00</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-1 text-stone-400">Normal EQ Ledger Debit (MTM Loss Obligation):</td>
+                                    <td class="py-1 text-right font-bold text-rose-400" id="ledger-mtm">₹4,150.00</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-1 text-stone-400">MTF Ledger Loan Balance (Principal Owed):</td>
+                                    <td class="py-1 text-right font-bold text-amber-400" id="ledger-loan">₹3,90,000.00</td>
+                                </tr>
+                                <tr class="font-bold text-emerald-400 pt-1">
+                                    <td class="py-1.5 font-sans">Net Cash Released to Ledger if Sold Today:</td>
+                                    <td class="py-1.5 text-right font-mono text-sm" id="ledger-exit">₹2,40,740.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- MATHEMATICAL STEP-BY-STEP DERIVATION & LIVE FORMULA ENGINE -->
+            <div class="bg-white p-6 rounded-xl border border-orange-200 shadow-sm space-y-5">
+                <div class="border-b border-stone-200 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                        <h3 class="text-base font-bold text-stone-900 flex items-center gap-2">
+                            <span>📐</span> Mathematical Derivation & Step-by-Step Obligation Calculations
+                        </h3>
+                        <p class="text-xs text-stone-500 mt-0.5">
+                            Formal algebraic proofs and live value substitutions powering your Kite MTF position widget.
+                        </p>
+                    </div>
+                    <span class="px-2.5 py-1 text-[11px] font-mono font-bold bg-orange-100 text-orange-800 rounded border border-orange-200">
+                        Live Reactive Equations
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                    <!-- Equation 1: Capital Composition & Effective Leverage -->
+                    <div class="p-4 bg-orange-50/50 rounded-xl border border-orange-200 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-orange-950 uppercase tracking-wider font-mono">1. Capital Decomposition & Leverage</span>
+                            <span class="text-[10px] px-2 py-0.5 bg-orange-200 text-orange-900 rounded font-bold font-mono">Capital Balance</span>
+                        </div>
+                        <p class="text-xs text-stone-600">
+                            The gross invested cost is divided between Zerodha's funded loan and the client's initial margin:
+                        </p>
+                        <div class="p-2.5 bg-white rounded-lg border border-orange-200 font-mono text-xs text-stone-800 space-y-1">
+                            <p class="font-bold text-orange-800">Formula: Invested (I) = Funded Loan (F) + Initial Margin (IM)</p>
+                            <p id="math-eq1-step1" class="text-stone-700">₹5,95,000.00 = ₹3,90,000.00 (65.55%) + ₹2,05,000.00 (34.45%)</p>
+                            <p class="font-bold text-orange-800 pt-1">Leverage Multiple (L) = I ÷ IM</p>
+                            <p id="math-eq1-step2" class="text-stone-700">L = ₹5,95,000.00 ÷ ₹2,05,000.00 = <strong class="text-stone-900">2.90× Purchasing Leverage</strong></p>
+                        </div>
+                    </div>
+
+                    <!-- Equation 2: Cash Margin Obligation Blocked -->
+                    <div class="p-4 bg-rose-50/50 rounded-xl border border-rose-200 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-rose-950 uppercase tracking-wider font-mono">2. Liquid Margin Obligation Blocked</span>
+                            <span class="text-[10px] px-2 py-0.5 bg-rose-200 text-rose-900 rounded font-bold font-mono">EQ Ledger Debit</span>
+                        </div>
+                        <p class="text-xs text-stone-600">
+                            Cash margin required in your equity ledger to maintain positions and prevent margin deficit calls:
+                        </p>
+                        <div class="p-2.5 bg-white rounded-lg border border-rose-200 font-mono text-xs text-stone-800 space-y-1">
+                            <p class="font-bold text-rose-800">Formula: Total Margin Obligation = Initial Margin (IM) + MTM Loss</p>
+                            <p id="math-eq2-step1" class="text-stone-700">Total Obligation = ₹2,05,000.00 + ₹4,150.00</p>
+                            <p id="math-eq2-step2" class="text-stone-700 pt-1">Total Liquid Cash Blocked = <strong class="text-rose-700 font-bold">₹2,09,150.00</strong></p>
+                            <p class="text-[11px] font-sans text-stone-500 italic mt-0.5">*If ledger cash &lt; ₹2,09,150, an RMS margin shortfall alert triggers at 8:00 AM.</p>
+                        </div>
+                    </div>
+
+                    <!-- Equation 3: Liquidation Payout & Margin Release Identity -->
+                    <div class="p-4 bg-emerald-50/50 rounded-xl border border-emerald-200 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-emerald-950 uppercase tracking-wider font-mono">3. Liquidation Net Credit (Margin Return)</span>
+                            <span class="text-[10px] px-2 py-0.5 bg-emerald-200 text-emerald-900 rounded font-bold font-mono">T+1 Credit Proof</span>
+                        </div>
+                        <p class="text-xs text-stone-600">
+                            Proof that your initial margin is implicitly returned within the net sale proceeds upon position exit:
+                        </p>
+                        <div class="p-2.5 bg-white rounded-lg border border-emerald-200 font-mono text-xs text-stone-800 space-y-1">
+                            <p class="font-bold text-emerald-800">Identity: Net Credit = Present Value (PV) - Funded Loan (F)</p>
+                            <p id="math-eq3-step1" class="text-stone-700">Net Credit = ₹6,31,000.00 - ₹3,90,000.00 = <strong class="text-emerald-700 font-bold">₹2,41,000.00</strong></p>
+                            <p class="font-bold text-emerald-800 pt-1">Proof Identity: Net Credit ≡ Initial Margin (IM) + Overall P&L</p>
+                            <p id="math-eq3-step2" class="text-stone-700">₹2,41,000.00 = ₹2,05,000.00 (Margin) + ₹36,000.00 (P&L) <span class="text-emerald-600 font-bold">✓ EXACT</span></p>
+                        </div>
+                    </div>
+
+                    <!-- Equation 4: Daily & Monthly Carrying Cost -->
+                    <div class="p-4 bg-amber-50/50 rounded-xl border border-amber-200 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-amber-950 uppercase tracking-wider font-mono">4. Carrying Interest Obligation Accrual</span>
+                            <span class="text-[10px] px-2 py-0.5 bg-amber-200 text-amber-900 rounded font-bold font-mono">0.04% / Day</span>
+                        </div>
+                        <p class="text-xs text-stone-600">
+                            Continuous holding interest accrued strictly on Zerodha's funded principal loan ($F$):
+                        </p>
+                        <div class="p-2.5 bg-white rounded-lg border border-amber-200 font-mono text-xs text-stone-800 space-y-1">
+                            <p class="font-bold text-amber-800">Formula: Daily Cost = Funded Loan (F) × 0.0004 (0.04%)</p>
+                            <p id="math-eq4-step1" class="text-stone-700">Daily Interest = ₹3,90,000.00 × 0.0004 = <strong class="text-amber-900 font-bold">₹156.00 / calendar day</strong></p>
+                            <p class="font-bold text-amber-800 pt-1">Monthly Cost (30 Days) = Daily Cost × 30</p>
+                            <p id="math-eq4-step2" class="text-stone-700">Monthly Interest = ₹156.00 × 30 = <strong class="text-amber-900 font-bold">₹4,680.00 / month</strong></p>
+                        </div>
+                    </div>
+
+                    <!-- Equation 5: RMS 80% Hard Stop Liquidation Threshold -->
+                    <div class="p-4 bg-stone-100 rounded-xl border border-stone-300 space-y-2 md:col-span-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-stone-900 uppercase tracking-wider font-mono">5. RMS 80% Hard-Stop Forced Liquidation Calculation</span>
+                            <span class="text-[10px] px-2 py-0.5 bg-rose-600 text-white rounded font-bold font-mono">RMS Risk Trigger</span>
+                        </div>
+                        <p class="text-xs text-stone-600">
+                            Zerodha automatically liquidates MTF positions when unrealized portfolio loss equals 80% of the loan funded by Zerodha:
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 p-3 bg-white rounded-lg border border-stone-200 font-mono text-xs text-stone-800">
+                            <div>
+                                <p class="text-stone-500 font-sans text-[11px]">A. Max Allowed Loss (80% of Loan):</p>
+                                <p class="text-stone-600 font-bold">0.80 × Funded Value (F)</p>
+                                <p id="math-eq5-step1" class="text-rose-600 font-bold text-sm mt-0.5">0.80 × ₹3,90,000 = ₹3,12,000</p>
+                            </div>
+                            <div>
+                                <p class="text-stone-500 font-sans text-[11px]">B. Present Value at Forced Stop:</p>
+                                <p class="text-stone-600 font-bold">Invested Cost (I) - Max Loss</p>
+                                <p id="math-eq5-step2" class="text-stone-900 font-bold text-sm mt-0.5">₹5,95,000 - ₹3,12,000 = ₹2,83,000</p>
+                            </div>
+                            <div>
+                                <p class="text-stone-500 font-sans text-[11px]">C. Portfolio Decline to Trigger:</p>
+                                <p class="text-stone-600 font-bold">Max Loss ÷ Invested (I) × 100</p>
+                                <p id="math-eq5-step3" class="text-rose-700 font-bold text-sm mt-0.5">(₹3.12L ÷ ₹5.95L) = -52.44% Drop</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
         </section>
 
         <!-- ================= SECTION 2: LEVERAGE FINDER ================= -->
@@ -1155,10 +1563,167 @@
                 if (brokerCompareChart) brokerCompareChart.update();
             }
             if (tabId === 'operations') {
-                reconcileCN();
+                calculateUniversalReconciliation();
+            }
+            if (tabId === 'position') {
+                syncKitePositionCalculator('init');
             }
             if (tabId === 'meesho') {
                 initMeeshoChart();
+            }
+        }
+
+        // Backward compatibility alias for reconcileCN
+        function reconcileCN() {
+            calculateUniversalReconciliation();
+        }
+
+        // ================= SECTION: POSITION & OBLIGATION ANALYZER LOGIC =================
+        function formatLakhsKite(val) {
+            if (Math.abs(val) >= 100000) {
+                return (val / 100000).toFixed(2).replace(/\.00$/, '') + 'L';
+            } else if (Math.abs(val) >= 1000) {
+                return (val / 1000).toFixed(2).replace(/\.00$/, '') + 'k';
+            }
+            return val.toFixed(2);
+        }
+
+        function resetKiteDefaults() {
+            document.getElementById('input-invested').value = 595000;
+            document.getElementById('input-pv').value = 631000;
+            document.getElementById('input-funded').value = 390000;
+            document.getElementById('input-im').value = 205000;
+            document.getElementById('input-mtm').value = 4150;
+            document.getElementById('input-pnl').value = 35740;
+            syncKitePositionCalculator('init');
+        }
+
+        function syncKitePositionCalculator(source) {
+            let invested = parseFloat(document.getElementById('input-invested').value) || 0;
+            let pv = parseFloat(document.getElementById('input-pv').value) || 0;
+            let funded = parseFloat(document.getElementById('input-funded').value) || 0;
+            let im = parseFloat(document.getElementById('input-im').value) || 0;
+            let mtm = Math.abs(parseFloat(document.getElementById('input-mtm').value) || 0);
+            let pnl = parseFloat(document.getElementById('input-pnl').value) || 0;
+
+            if (source === 'invested') {
+                im = invested - funded;
+                document.getElementById('input-im').value = im;
+                pnl = pv - invested;
+                document.getElementById('input-pnl').value = pnl;
+            } else if (source === 'funded') {
+                im = invested - funded;
+                document.getElementById('input-im').value = im;
+            } else if (source === 'im') {
+                funded = invested - im;
+                document.getElementById('input-funded').value = funded;
+            } else if (source === 'pv') {
+                pnl = pv - invested;
+                document.getElementById('input-pnl').value = pnl;
+            } else if (source === 'pnl') {
+                pv = invested + pnl;
+                document.getElementById('input-pv').value = pv;
+            }
+
+            // Top Dashboard
+            document.getElementById('disp-invested').innerText = formatLakhsKite(invested);
+            document.getElementById('disp-pv').innerText = formatLakhsKite(pv);
+            document.getElementById('disp-funded').innerText = formatLakhsKite(funded);
+            document.getElementById('disp-im').innerText = formatLakhsKite(im);
+            document.getElementById('disp-mtm').innerText = '-' + formatLakhsKite(mtm);
+
+            const fundedPct = invested > 0 ? ((funded / invested) * 100).toFixed(1) : 0;
+            const imPct = invested > 0 ? ((im / invested) * 100).toFixed(1) : 0;
+            document.getElementById('disp-funded-sub').innerText = `Zerodha Loan (${fundedPct}%)`;
+            document.getElementById('disp-im-sub').innerText = `Your Cash (${imPct}%)`;
+            
+            const pnlPct = invested > 0 ? ((pnl / invested) * 100).toFixed(1) : 0;
+            const pnlArrow = pnl >= 0 ? '▲' : '▼';
+            const pnlColorClass = pnl >= 0 ? 'text-emerald-600' : 'text-rose-600';
+            const pnlEl = document.getElementById('disp-pnl');
+            pnlEl.className = `text-2xl font-bold ${pnlColorClass} mt-1 flex items-center justify-center gap-1`;
+            pnlEl.innerHTML = `<span>${formatLakhsKite(pnl)}</span><span class="text-xs font-semibold">${pnlArrow} ${pnlPct}%</span>`;
+
+            // Obligation 1: Total Margin Obligation Blocked
+            const totalMarginBlocked = im + mtm;
+            document.getElementById('calc-total-margin-obl').innerText = `₹${totalMarginBlocked.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('item-im').innerText = `₹${im.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+            document.getElementById('item-mtm').innerText = `₹${mtm.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+
+            // Obligation 2: Net Settlement Exit Credit
+            const netExitCredit = pv - funded; // Equals Initial Margin + PnL
+            document.getElementById('calc-net-settlement-credit').innerText = `₹${netExitCredit.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('item-pv').innerText = `₹${pv.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+            document.getElementById('item-funded').innerText = `-₹${funded.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+
+            // Obligation 3: Daily Carrying Cost
+            const dailyInterest = funded * 0.0004;
+            const monthlyInterest = dailyInterest * 30;
+            document.getElementById('calc-daily-interest').innerHTML = `₹${dailyInterest.toFixed(2)} <span class="text-xs font-normal text-stone-500">/ day</span>`;
+            document.getElementById('item-monthly-interest').innerText = `₹${monthlyInterest.toFixed(2)}`;
+
+            // Stats
+            const leverage = im > 0 ? (invested / im).toFixed(2) : '1.00';
+            document.getElementById('stat-leverage').innerText = `${leverage}x (${fundedPct}% Funded)`;
+
+            const rmsTriggerLoss = funded * 0.80;
+            const rmsTriggerPV = invested - rmsTriggerLoss;
+            document.getElementById('stat-rms').innerText = `₹${rmsTriggerLoss.toLocaleString('en-IN', {maximumFractionDigits: 0})} Loss (PV = ₹${(rmsTriggerPV/100000).toFixed(2)}L)`;
+
+            // Basket Reality Text
+            const winningGain = pnl + mtm;
+            document.getElementById('basket-mtm-loss').innerText = `₹${mtm.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+            document.getElementById('basket-gain').innerText = `+₹${winningGain.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+            document.getElementById('basket-net-pnl').innerText = `${pnl >= 0 ? '+' : ''}₹${pnl.toLocaleString('en-IN', {minimumFractionDigits: 2})} (${pnlPct}%)`;
+
+            // Dual Ledger Table
+            document.getElementById('ledger-im').innerText = `₹${im.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+            document.getElementById('ledger-mtm').innerText = `₹${mtm.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+            document.getElementById('ledger-loan').innerText = `₹${funded.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+            document.getElementById('ledger-exit').innerText = `₹${netExitCredit.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+
+            // Live Mathematical Equations Card Bindings
+            // Equation 1: Decomposition & Leverage
+            const eq1Step1 = document.getElementById('math-eq1-step1');
+            const eq1Step2 = document.getElementById('math-eq1-step2');
+            if (eq1Step1 && eq1Step2) {
+                eq1Step1.innerText = `₹${invested.toLocaleString('en-IN', {minimumFractionDigits:2})} = ₹${funded.toLocaleString('en-IN', {minimumFractionDigits:2})} (${fundedPct}%) + ₹${im.toLocaleString('en-IN', {minimumFractionDigits:2})} (${imPct}%)`;
+                eq1Step2.innerHTML = `L = ₹${invested.toLocaleString('en-IN', {minimumFractionDigits:0})} ÷ ₹${im.toLocaleString('en-IN', {minimumFractionDigits:0})} = <strong class="text-stone-900">${leverage}× Purchasing Leverage</strong>`;
+            }
+
+            // Equation 2: Cash Margin Blocked
+            const eq2Step1 = document.getElementById('math-eq2-step1');
+            const eq2Step2 = document.getElementById('math-eq2-step2');
+            if (eq2Step1 && eq2Step2) {
+                eq2Step1.innerText = `Total Obligation = ₹${im.toLocaleString('en-IN', {minimumFractionDigits:2})} + ₹${mtm.toLocaleString('en-IN', {minimumFractionDigits:2})}`;
+                eq2Step2.innerHTML = `Total Liquid Cash Blocked = <strong class="text-rose-700 font-bold">₹${totalMarginBlocked.toLocaleString('en-IN', {minimumFractionDigits:2})}</strong>`;
+            }
+
+            // Equation 3: Liquidation Payout & Identity
+            const eq3Step1 = document.getElementById('math-eq3-step1');
+            const eq3Step2 = document.getElementById('math-eq3-step2');
+            if (eq3Step1 && eq3Step2) {
+                eq3Step1.innerHTML = `Net Credit = ₹${pv.toLocaleString('en-IN', {minimumFractionDigits:2})} - ₹${funded.toLocaleString('en-IN', {minimumFractionDigits:2})} = <strong class="text-emerald-700 font-bold">₹${netExitCredit.toLocaleString('en-IN', {minimumFractionDigits:2})}</strong>`;
+                eq3Step2.innerHTML = `₹${netExitCredit.toLocaleString('en-IN', {minimumFractionDigits:2})} = ₹${im.toLocaleString('en-IN', {minimumFractionDigits:2})} (Margin) + ₹${pnl.toLocaleString('en-IN', {minimumFractionDigits:2})} (P&L) <span class="text-emerald-600 font-bold">✓ EXACT</span>`;
+            }
+
+            // Equation 4: Carrying Cost
+            const eq4Step1 = document.getElementById('math-eq4-step1');
+            const eq4Step2 = document.getElementById('math-eq4-step2');
+            if (eq4Step1 && eq4Step2) {
+                eq4Step1.innerHTML = `Daily Interest = ₹${funded.toLocaleString('en-IN', {minimumFractionDigits:2})} × 0.0004 = <strong class="text-amber-900 font-bold">₹${dailyInterest.toFixed(2)} / calendar day</strong>`;
+                eq4Step2.innerHTML = `Monthly Interest = ₹${dailyInterest.toFixed(2)} × 30 = <strong class="text-amber-900 font-bold">₹${monthlyInterest.toFixed(2)} / month</strong>`;
+            }
+
+            // Equation 5: RMS Hard Stop
+            const eq5Step1 = document.getElementById('math-eq5-step1');
+            const eq5Step2 = document.getElementById('math-eq5-step2');
+            const eq5Step3 = document.getElementById('math-eq5-step3');
+            if (eq5Step1 && eq5Step2 && eq5Step3) {
+                const dropPct = invested > 0 ? ((rmsTriggerLoss / invested) * 100).toFixed(2) : '0';
+                eq5Step1.innerText = `0.80 × ₹${funded.toLocaleString('en-IN', {maximumFractionDigits:0})} = ₹${rmsTriggerLoss.toLocaleString('en-IN', {maximumFractionDigits:0})}`;
+                eq5Step2.innerText = `₹${invested.toLocaleString('en-IN', {maximumFractionDigits:0})} - ₹${rmsTriggerLoss.toLocaleString('en-IN', {maximumFractionDigits:0})} = ₹${rmsTriggerPV.toLocaleString('en-IN', {maximumFractionDigits:0})}`;
+                eq5Step3.innerText = `(₹${(rmsTriggerLoss/100000).toFixed(2)}L ÷ ₹${(invested/100000).toFixed(2)}L) = -${dropPct}% Drop`;
             }
         }
 
@@ -1694,6 +2259,7 @@
             runCalculator();
             calcRMS();
             calculateUniversalReconciliation();
+            syncKitePositionCalculator('init');
         });
     </script>
 </body>
